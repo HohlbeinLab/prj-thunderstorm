@@ -3,6 +3,7 @@ package cz.cuni.lf1.lge.ThunderSTORM.estimators;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.BiplaneEllipticGaussianPSF;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
 import org.apache.commons.math3.analysis.MultivariateVectorFunction;
@@ -53,7 +54,7 @@ public class LsqMleBiplaneFunctions implements ILsqFunctions, IMleFunctions {
         if(!useWeighting){
             Arrays.fill(weights, 1);
         } else {
-            double minWeight = 1.0 / Math.max(plane1.getMax(), plane2.getMax());
+            double minWeight = 1.0 / MathProxy.max(plane1.getMax(), plane2.getMax());
             double maxWeight = 1000 * minWeight;
             int index = 0;
             for (int i = 0; i < plane1.values.length; i++, index++) {

@@ -7,6 +7,7 @@ import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.Fitting.UncertaintyNotApplicableException;
 import cz.cuni.lf1.lge.ThunderSTORM.results.IJResultsTable;
 import cz.cuni.lf1.lge.ThunderSTORM.results.MeasurementProtocol;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.Point;
 import ij.IJ;
 import ij.process.FloatProcessor;
@@ -153,7 +154,7 @@ public class MultipleLocationsImageFitting implements IEstimator {
     }
 
     private boolean checkIsInSubimage(double x, double y) {
-        if(Math.abs(x) > subimageSize || Math.abs(y) > subimageSize) {
+        if(MathProxy.abs(x) > subimageSize || MathProxy.abs(y) > subimageSize) {
             return false;
         }
         return true;

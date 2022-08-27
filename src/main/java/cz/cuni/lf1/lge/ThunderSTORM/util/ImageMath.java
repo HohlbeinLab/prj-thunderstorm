@@ -1,7 +1,6 @@
 package cz.cuni.lf1.lge.ThunderSTORM.util;
 
 import ij.process.FloatProcessor;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.pow;
 import ij.process.ByteProcessor;
 import ij.process.ImageStatistics;
 import java.util.Arrays;
@@ -239,7 +238,7 @@ public class ImageMath {
         out.setMask(fp.getMask());
         for (int i = 0, im = fp.getWidth(); i < im; i++) {
             for (int j = 0, jm = fp.getHeight(); j < jm; j++) {
-                out.setf(i, j, (float)pow((double)fp.getPixelValue(i, j), (double)val));
+                out.setf(i, j, (float) MathProxy.pow(fp.getPixelValue(i, j), val));
             }
         }
 

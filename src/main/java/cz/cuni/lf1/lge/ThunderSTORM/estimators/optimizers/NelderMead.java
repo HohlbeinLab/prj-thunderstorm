@@ -1,6 +1,6 @@
 package cz.cuni.lf1.lge.ThunderSTORM.estimators.optimizers;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqr;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import org.apache.commons.math3.analysis.MultivariateFunction;
 
 public class NelderMead {
@@ -356,7 +356,7 @@ public class NelderMead {
                     double x = z / dnn;
                     z = 0.0;
                     for(int i = 0; i < nn; i++) {
-                        z = z + sqr(y[i] - x);
+                        z = z + MathProxy.sqr(y[i] - x);
                     }
                     if(z <= rq) {
                         break;

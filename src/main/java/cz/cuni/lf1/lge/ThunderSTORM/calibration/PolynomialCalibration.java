@@ -1,6 +1,6 @@
 package cz.cuni.lf1.lge.ThunderSTORM.calibration;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.*;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 
 import org.apache.commons.math3.analysis.ParametricUnivariateFunction;
 import org.apache.commons.math3.fitting.CurveFitter;
@@ -35,7 +35,7 @@ public class PolynomialCalibration extends DefocusCalibration {
 
     @Override
     public double evalDefocus(double z, double w0, double a, double b, double c, double d) {
-        return b + a*sqr(z - c) + d*pow(z - c,3);
+        return b + a*MathProxy.sqr(z - c) + d*MathProxy.pow(z - c,3);
     }
 
     private double dw(double z, double w0, double a, double b, double c, double d) {
@@ -57,7 +57,7 @@ public class PolynomialCalibration extends DefocusCalibration {
 
     @Override
     public double evalDefocus2(double z, double w0, double a, double b, double c, double d) {
-        return sqr(evalDefocus(z, w0, a, b, c, d));
+        return MathProxy.sqr(evalDefocus(z, w0, a, b, c, d));
     }
 
     private double dw2(double z, double w0, double a, double b, double c, double d) {
@@ -86,7 +86,7 @@ public class PolynomialCalibration extends DefocusCalibration {
         double [] polyParams1 = new double[] {w01, c1, a1, b1, d1};
         double [] polyParams2 = new double[] {w02, c2, a2, b2, d2};
 
-        double zRange = ceil(2*(abs(c1)+abs(c2)));    // -zRange:+zRange
+        double zRange = MathProxy.ceil(2*(MathProxy.abs(c1)+MathProxy.abs(c2)));    // -zRange:+zRange
         for(double z = -zRange; z <= zRange; z += 5.0) {
             fitter1.addObservedPoint(z, polyFn.value(z, polyParams1));
             fitter2.addObservedPoint(z, polyFn.value(z, polyParams2));

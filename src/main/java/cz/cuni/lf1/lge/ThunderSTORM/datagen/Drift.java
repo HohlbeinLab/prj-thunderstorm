@@ -1,8 +1,6 @@
 package cz.cuni.lf1.lge.ThunderSTORM.datagen;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.PI;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.cos;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sin;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 
 public class Drift {
 
@@ -15,7 +13,7 @@ public class Drift {
         if(angle_in_rad) {
             this.angle = angle;
         } else {
-            this.angle = angle / 180.0 * PI;
+            this.angle = angle / 180.0 * MathProxy.PI;
         }
         if(nframes > 1) {
             dist_step = dist / (double)(nframes-1); // nframes-1, because there is no drift in the first frame
@@ -25,11 +23,11 @@ public class Drift {
     }
 
     public double getDriftX(int frame) {    // indexing from zero
-        return ((double)frame * dist_step) * cos(angle);
+        return ((double)frame * dist_step) * MathProxy.cos(angle);
     }
 
     public double getDriftY(int frame) {    // indexing from zero
-        return ((double)frame * dist_step) * sin(angle);
+        return ((double)frame * dist_step) * MathProxy.sin(angle);
     }
 
 }

@@ -7,6 +7,8 @@ import cz.cuni.lf1.lge.ThunderSTORM.util.Graph;
 import cz.cuni.lf1.lge.ThunderSTORM.util.GridBagHelper;
 import static cz.cuni.lf1.lge.ThunderSTORM.util.ImageMath.applyMask;
 import static cz.cuni.lf1.lge.ThunderSTORM.util.ImageMath.threshold;
+
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.Point;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.ParameterKey;
 import ij.plugin.filter.MaximumFinder;
@@ -102,7 +104,7 @@ public final class CentroidOfConnectedComponentsDetector extends IDetectorUI imp
         Vector<Point> detections = new Vector<Point>();
         for(Graph.ConnectedComponent c : Graph.getConnectedComponents((ImageProcessor) maskedImage, Graph.CONNECTIVITY_8)) {
             Point pt = c.centroid();
-            pt.val = new Double(image.getf((int)Math.round(pt.x.doubleValue()), (int)Math.round(pt.y.doubleValue())));
+            pt.val = (double) image.getf((int) MathProxy.round(pt.x.doubleValue()), (int) MathProxy.round(pt.y.doubleValue()));
             detections.add(pt);
         }
         return detections;

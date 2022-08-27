@@ -8,6 +8,8 @@ import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.Uni
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.Fitting.LABEL_UNCERTAINTY_XY;
+
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import ij.CompositeImage;
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -196,7 +198,7 @@ public abstract class AbstractRendering implements RenderingMethod, IncrementalR
                     }
                 } else {
                     resolution = (xmax - xmin) / imSizeX;
-                    if(Math.abs(resolution - (ymax - ymin) / imSizeY) > 0.001) {
+                    if(MathProxy.abs(resolution - (ymax - ymin) / imSizeY) > 0.001) {
                         throw new IllegalArgumentException("Resolution in x and y appears to be different.");
                     }
                 }

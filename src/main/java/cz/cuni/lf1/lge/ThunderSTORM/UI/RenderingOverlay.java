@@ -7,6 +7,7 @@ import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel;
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel.Params.LABEL_X;
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel.Params.LABEL_Y;
 import cz.cuni.lf1.lge.ThunderSTORM.results.IJResultsTable;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import ij.ImagePlus;
 import ij.gui.Overlay;
 import ij.gui.Roi;
@@ -226,7 +227,7 @@ public class RenderingOverlay {
 
         void drawCross(Graphics g, int x, int y) {
             double magnification = getMagnification();
-            int halfSize = (int) Math.ceil(1 * magnification);
+            int halfSize = (int) MathProxy.ceil(1 * magnification);
             g.setColor(fillColor != null ? fillColor : Color.white);
             g.drawLine(x - halfSize, y, x + halfSize, y);
             g.drawLine(x, y - halfSize, x, y + halfSize);
@@ -234,7 +235,7 @@ public class RenderingOverlay {
 
         void drawCircle(Graphics g, int x, int y) {
             double magnification = getMagnification();
-            int halfSize = (int) Math.ceil(1 * magnification);
+            int halfSize = (int) MathProxy.ceil(1 * magnification);
             g.setColor(fillColor != null ? fillColor : Color.white);
             g.drawOval(x - halfSize, y - halfSize, 2 * halfSize, 2 * halfSize);
         }

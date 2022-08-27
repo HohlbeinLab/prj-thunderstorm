@@ -3,16 +3,13 @@ package cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF;
 import cz.cuni.lf1.lge.ThunderSTORM.calibration.DaostormCalibration;
 import cz.cuni.lf1.lge.ThunderSTORM.calibration.DoubleDefocusCalibration;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.SubImage;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.VectorMath;
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
 import org.apache.commons.math3.analysis.MultivariateVectorFunction;
 
 import java.util.Arrays;
-
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.*;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.log;
-import static java.lang.Math.abs;
 
 public class BiplaneEllipticGaussianPSF extends PSFModel {
 
@@ -28,11 +25,11 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
         this.useNumericalDerivatives = numericalDerivatives;
         this.calibration = calibration;
         this.fi1 = calibration.cal1.angle;
-        this.sinfi1 = Math.sin(fi1);
-        this.cosfi1 = Math.cos(fi1);
+        this.sinfi1 = MathProxy.sin(fi1);
+        this.cosfi1 = MathProxy.cos(fi1);
         this.fi2 = calibration.cal2.angle;
-        this.sinfi2 = Math.sin(fi2);
-        this.cosfi2 = Math.cos(fi2);
+        this.sinfi2 = MathProxy.sin(fi2);
+        this.cosfi2 = MathProxy.cos(fi2);
     }
 
     @Override
@@ -57,9 +54,9 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
         transformed[Params.SIGMA2] = calibration.cal1.getSigma2Squared(parameters[Params.Z]);
         transformed[Params.SIGMA3] = calibration.cal2.getSigma1Squared(parameters[Params.Z]);
         transformed[Params.SIGMA4] = calibration.cal2.getSigma2Squared(parameters[Params.Z]);
-        transformed[Params.INTENSITY] = sqr(parameters[Params.INTENSITY]);
-        transformed[Params.OFFSET1] = sqr(parameters[Params.OFFSET1]);
-        transformed[Params.OFFSET2] = sqr(parameters[Params.OFFSET2]);
+        transformed[Params.INTENSITY] = MathProxy.sqr(parameters[Params.INTENSITY]);
+        transformed[Params.OFFSET1] = MathProxy.sqr(parameters[Params.OFFSET1]);
+        transformed[Params.OFFSET2] = MathProxy.sqr(parameters[Params.OFFSET2]);
         return transformed;
     }
 
@@ -70,9 +67,9 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
         transformed[Params.SIGMA2] = calibration.cal1.getSigma2(parameters[Params.Z]);
         transformed[Params.SIGMA3] = calibration.cal2.getSigma1(parameters[Params.Z]);
         transformed[Params.SIGMA4] = calibration.cal2.getSigma2(parameters[Params.Z]);
-        transformed[Params.INTENSITY] = sqrt(abs(parameters[Params.INTENSITY]));
-        transformed[Params.OFFSET1] = sqrt(abs(parameters[Params.OFFSET1]));
-        transformed[Params.OFFSET2] = sqrt(abs(parameters[Params.OFFSET2]));
+        transformed[Params.INTENSITY] = MathProxy.sqrt(MathProxy.abs(parameters[Params.INTENSITY]));
+        transformed[Params.OFFSET1] = MathProxy.sqrt(MathProxy.abs(parameters[Params.OFFSET1]));
+        transformed[Params.OFFSET2] = MathProxy.sqrt(MathProxy.abs(parameters[Params.OFFSET2]));
         return transformed;
     }
 
@@ -136,15 +133,15 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
                 for(int i = 0; i < xgrid1.length; i++, index++) {
                     double dx = ((xgrid1[i] - tparams[Params.X])*cosfi1 - (ygrid1[i] - tparams[Params.Y])*sinfi1);
                     double dy = ((xgrid1[i] - tparams[Params.X])*sinfi1 + (ygrid1[i] - tparams[Params.Y])*cosfi1);
-                    retVal[index] = exp(-0.5 * (sqr(dx/params[Params.SIGMA1]) + sqr(dy/params[Params.SIGMA2])))
-                                  * (tparams[Params.INTENSITY] / 2.0) / (2*Math.PI*params[Params.SIGMA1]*params[Params.SIGMA2])
+                    retVal[index] = MathProxy.exp(-0.5 * (MathProxy.sqr(dx/params[Params.SIGMA1]) + MathProxy.sqr(dy/params[Params.SIGMA2])))
+                                  * (tparams[Params.INTENSITY] / 2.0) / (2*MathProxy.PI*params[Params.SIGMA1]*params[Params.SIGMA2])
                                   + tparams[Params.OFFSET1];
                 }
                 for(int i = 0; i < xgrid2.length; i++, index++) {
                     double dx = ((xgrid2[i] - tparams[Params.X])*cosfi2 - (ygrid2[i] - tparams[Params.Y])*sinfi2);
                     double dy = ((xgrid2[i] - tparams[Params.X])*sinfi2 + (ygrid2[i] - tparams[Params.Y])*cosfi2);
-                    retVal[index] = exp(-0.5 * (sqr(dx/params[Params.SIGMA3]) + sqr(dy/params[Params.SIGMA4])))
-                            * (tparams[Params.INTENSITY] / 2.0) / (2*Math.PI*params[Params.SIGMA3]*params[Params.SIGMA4])
+                    retVal[index] = MathProxy.exp(-0.5 * (MathProxy.sqr(dx/params[Params.SIGMA3]) + MathProxy.sqr(dy/params[Params.SIGMA4])))
+                            * (tparams[Params.INTENSITY] / 2.0) / (2*MathProxy.PI*params[Params.SIGMA3]*params[Params.SIGMA4])
                             + tparams[Params.OFFSET2];
                 }
                 return retVal;
@@ -172,8 +169,8 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
                     double cosfiXd = cosfi1 * xd, cosfiYd = cosfi1 * yd;
                     double sinfiYd = sinfi1 * yd, sinfiXd = sinfi1 * xd;
                     double first = cosfiXd - sinfiYd, second = sinfiXd + cosfiYd;
-                    double expVal = exp(-0.5 * (sqr(first)/transformedPoint[Params.SIGMA1] + sqr(second)/transformedPoint[Params.SIGMA2]));
-                    double oneDivPISS2 = 1 / (Math.PI * point[Params.SIGMA1] * point[Params.SIGMA2]);
+                    double expVal = MathProxy.exp(-0.5 * (MathProxy.sqr(first)/transformedPoint[Params.SIGMA1] + MathProxy.sqr(second)/transformedPoint[Params.SIGMA2]));
+                    double oneDivPISS2 = 1 / (MathProxy.PI * point[Params.SIGMA1] * point[Params.SIGMA2]);
                     // diff(psf, x0)
                     double pom1 = first*cosfi1/transformedPoint[Params.SIGMA1] + second*sinfi1/transformedPoint[Params.SIGMA2];
                     retVal[index][Params.X] = oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * pom1 * expVal;
@@ -181,11 +178,11 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
                     double pom2 = first*sinfi1/transformedPoint[Params.SIGMA1] + second*cosfi1/transformedPoint[Params.SIGMA2];
                     retVal[index][Params.Y] = oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * pom2 * expVal;
                     // diff(psf, z0)
-                    double pom4 = (transformedPoint[Params.Z] - calibration.cal1.c1) / sqr(calibration.cal1.d1
-                                * (1 + sqr((transformedPoint[Params.Z] - calibration.cal1.c1) / calibration.cal1.d1)));
-                    double pom5 = (transformedPoint[Params.Z] - calibration.cal1.c2) / sqr(calibration.cal1.d2
-                                * (1 + sqr((transformedPoint[Params.Z] - calibration.cal1.c2) / calibration.cal1.d2)));
-                    double pom3 = sqr(first) * pom4 + sqr(second) * pom5;
+                    double pom4 = (transformedPoint[Params.Z] - calibration.cal1.c1) / MathProxy.sqr(calibration.cal1.d1
+                                * (1 + MathProxy.sqr((transformedPoint[Params.Z] - calibration.cal1.c1) / calibration.cal1.d1)));
+                    double pom5 = (transformedPoint[Params.Z] - calibration.cal1.c2) / MathProxy.sqr(calibration.cal1.d2
+                                * (1 + MathProxy.sqr((transformedPoint[Params.Z] - calibration.cal1.c2) / calibration.cal1.d2)));
+                    double pom3 = MathProxy.sqr(first) * pom4 + MathProxy.sqr(second) * pom5;
                     retVal[index][Params.Z] = oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * expVal * pom3
                                             - oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * expVal * pom4
                                             - oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * expVal * pom5;
@@ -200,8 +197,8 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
                     double cosfiXd = cosfi2 * xd, cosfiYd = cosfi2 * yd;
                     double sinfiYd = sinfi2 * yd, sinfiXd = sinfi2 * xd;
                     double first = cosfiXd - sinfiYd, second = sinfiXd + cosfiYd;
-                    double expVal = exp(-0.5 * (sqr(first)/transformedPoint[Params.SIGMA3] + sqr(second)/transformedPoint[Params.SIGMA4]));
-                    double oneDivPISS2 = 1 / (Math.PI * point[Params.SIGMA3] * point[Params.SIGMA4]);
+                    double expVal = MathProxy.exp(-0.5 * (MathProxy.sqr(first)/transformedPoint[Params.SIGMA3] + MathProxy.sqr(second)/transformedPoint[Params.SIGMA4]));
+                    double oneDivPISS2 = 1 / (MathProxy.PI * point[Params.SIGMA3] * point[Params.SIGMA4]);
                     // diff(psf, x0)
                     double pom1 = first*cosfi2/transformedPoint[Params.SIGMA3] + second*sinfi2/transformedPoint[Params.SIGMA4];
                     retVal[index][Params.X] = oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * pom1 * expVal;
@@ -209,11 +206,11 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
                     double pom2 = first*sinfi2/transformedPoint[Params.SIGMA3] + second*cosfi2/transformedPoint[Params.SIGMA4];
                     retVal[index][Params.Y] = oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * pom2 * expVal;
                     // diff(psf, z0)
-                    double pom4 = (transformedPoint[Params.Z] - calibration.cal2.c1) / sqr(calibration.cal2.d1
-                            * (1 + sqr((transformedPoint[Params.Z] - calibration.cal2.c1) / calibration.cal2.d1)));
-                    double pom5 = (transformedPoint[Params.Z] - calibration.cal2.c2) / sqr(calibration.cal2.d2
-                            * (1 + sqr((transformedPoint[Params.Z] - calibration.cal2.c2) / calibration.cal2.d2)));
-                    double pom3 = sqr(first) * pom4 + sqr(second) * pom5;
+                    double pom4 = (transformedPoint[Params.Z] - calibration.cal2.c1) / MathProxy.sqr(calibration.cal2.d1
+                            * (1 + MathProxy.sqr((transformedPoint[Params.Z] - calibration.cal2.c1) / calibration.cal2.d1)));
+                    double pom5 = (transformedPoint[Params.Z] - calibration.cal2.c2) / MathProxy.sqr(calibration.cal2.d2
+                            * (1 + MathProxy.sqr((transformedPoint[Params.Z] - calibration.cal2.c2) / calibration.cal2.d2)));
+                    double pom3 = MathProxy.sqr(first) * pom4 + MathProxy.sqr(second) * pom5;
                     retVal[index][Params.Z] = oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * expVal * pom3
                             - oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * expVal * pom4
                             - oneDivPISS2 * 0.5 * transformedPoint[Params.INTENSITY] * expVal * pom5;
@@ -260,10 +257,10 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
                 double logLikelihood = 0;
                 int index = 0;
                 for(int i = 0; i < values1.length; i++, index++) {
-                    logLikelihood += values1[i] * Math.max(-1e6, log(expectedValues[index])) - expectedValues[index];
+                    logLikelihood += values1[i] * MathProxy.max(-1e6, MathProxy.log(expectedValues[index])) - expectedValues[index];
                 }
                 for(int i = 0; i < values2.length; i++, index++) {
-                    logLikelihood += values2[i] * Math.max(-1e6, log(expectedValues[index])) - expectedValues[index];
+                    logLikelihood += values2[i] * MathProxy.max(-1e6, MathProxy.log(expectedValues[index])) - expectedValues[index];
                 }
                 return logLikelihood;
             }
@@ -271,7 +268,7 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
     }
 
     public double getChiSquared(double[] xgrid1, double[] ygrid1, double[] values1, double[] xgrid2, double[] ygrid2, double[] values2, double[] params, boolean weighted) {
-        double minWeight = 1.0 / Math.max(VectorMath.max(values1), VectorMath.max(values2));
+        double minWeight = 1.0 / MathProxy.max(VectorMath.max(values1), VectorMath.max(values2));
         double maxWeight = 1000 * minWeight;
 
         double[] expectedValues = getValueFunction(xgrid1, ygrid1, xgrid2, ygrid2).value(params);
@@ -285,7 +282,7 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
                     weight = maxWeight;
                 }
             }
-            chi2 += sqr(values1[i] - expectedValues[index]) * weight;
+            chi2 += MathProxy.sqr(values1[i] - expectedValues[index]) * weight;
         }
         for(int i = 0; i < values2.length; i++, index++) {
             double weight = 1;
@@ -295,7 +292,7 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
                     weight = maxWeight;
                 }
             }
-            chi2 += sqr(values2[i] - expectedValues[index]) * weight;
+            chi2 += MathProxy.sqr(values2[i] - expectedValues[index]) * weight;
         }
         return chi2;
     }

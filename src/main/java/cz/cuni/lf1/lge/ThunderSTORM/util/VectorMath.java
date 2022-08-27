@@ -627,7 +627,7 @@ public class VectorMath {
         }
         // moving average
         for (int i = 0, j = mavg.length - 1, l = lag / 2; i < mavg.length; i++, j--) {
-            double count = (double) Math.min(lag - Math.max(Math.max(0, l - i), Math.max(0, l - j)), mavg.length);
+            double count = (double) MathProxy.min(lag - MathProxy.max(MathProxy.max(0, l - i), MathProxy.max(0, l - j)), mavg.length);
             mavg[i] /= count;
         }
         return mavg;

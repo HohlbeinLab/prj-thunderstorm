@@ -34,8 +34,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqrt;
-
 public class DataGeneratorPlugIn implements PlugIn {
 
     private int width, height, frames, processing_frame;
@@ -70,7 +68,7 @@ public class DataGeneratorPlugIn implements PlugIn {
         ImageStack stack = new ImageStack(width, height);
         //FloatProcessor bkg = new DataGenerator().generateBackground(width, height, drift);
         //
-        int numThreads = Math.min(Prefs.getThreads(), frames);
+        int numThreads = MathProxy.min(Prefs.getThreads(), frames);
         GeneratorWorker[] generators = new GeneratorWorker[numThreads];
         Thread[] threads = new Thread[numThreads];
         processing_frame = 0;
@@ -181,7 +179,7 @@ public class DataGeneratorPlugIn implements PlugIn {
         }
 
         private void fillResults(ImageStack stack, IJGroundTruthTable gt) {
-            double bkgstd = sqrt(add_poisson_var);
+            double bkgstd = MathProxy.sqrt(add_poisson_var);
             for(int f = frame_start, i = 0; f <= frame_end; f++, i++) {
                 processingNewFrame("ThunderSTORM is building the image stack - frame %d out of %d...");
                 stack.addSlice("", local_stack.elementAt(i));

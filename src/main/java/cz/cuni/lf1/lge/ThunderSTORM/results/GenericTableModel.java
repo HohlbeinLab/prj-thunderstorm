@@ -1,12 +1,12 @@
 package cz.cuni.lf1.lge.ThunderSTORM.results;
 
 import cz.cuni.lf1.lge.ThunderSTORM.CameraSetupPlugIn;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.max;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.Units;
 import cz.cuni.lf1.lge.ThunderSTORM.util.ArrayIndexComparator;
 import cz.cuni.lf1.lge.ThunderSTORM.util.IValue;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.Pair;
 import ij.IJ;
 
@@ -250,7 +250,7 @@ public class GenericTableModel extends AbstractTableModel implements Cloneable {
         mol.descriptor = columns;
         rows.add(mol);
         if(mol.hasParam(MoleculeDescriptor.LABEL_ID)) {
-            maxId = (int)max(maxId, mol.getParam(MoleculeDescriptor.LABEL_ID));
+            maxId = (int) MathProxy.max(maxId, mol.getParam(MoleculeDescriptor.LABEL_ID));
         }
         int last = rows.size() - 1;
         fireTableRowsInserted(last, last);

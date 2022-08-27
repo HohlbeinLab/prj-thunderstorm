@@ -27,6 +27,8 @@ package cz.cuni.lf1.lge.ThunderSTORM.util.javaml.kdtree;
 
 // Hyper-Point class supporting KDTree class
 
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
+
 class HPoint {
 
     protected double[] coord;
@@ -72,8 +74,7 @@ class HPoint {
     }
 
     protected static double eucdist(HPoint x, HPoint y) {
-
-        return Math.sqrt(sqrdist(x, y));
+        return MathProxy.sqrt(sqrdist(x, y));
     }
 
     public String toString() {

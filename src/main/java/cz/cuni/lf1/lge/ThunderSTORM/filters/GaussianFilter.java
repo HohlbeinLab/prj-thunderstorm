@@ -3,7 +3,7 @@ package cz.cuni.lf1.lge.ThunderSTORM.filters;
 import cz.cuni.lf1.lge.ThunderSTORM.UI.GUI;
 import cz.cuni.lf1.lge.ThunderSTORM.UI.StoppedByUserException;
 import cz.cuni.lf1.lge.ThunderSTORM.thresholding.Thresholder;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.gauss;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.Padding;
 import ij.process.FloatProcessor;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public final class GaussianFilter implements IFilter {
     private static float [] getKernel(int size, double sigma) {
         float [] kernel = new float[size];
         for(int i = 0, center = size/2; i < size; i++) {
-            kernel[i] = (float) gauss(i - center, sigma, true);
+            kernel[i] = (float) MathProxy.gauss(i - center, sigma, true);
         }
         return kernel;
     }

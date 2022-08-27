@@ -1,5 +1,6 @@
 package cz.cuni.lf1.lge.ThunderSTORM.results;
 
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -97,8 +98,8 @@ public class IJDistribution implements PlugIn, TextListener {
         if(autoBinning) {
             //sd = 7, min = 3, max = 4
             // use Scott's method (1979 Biometrika, 66:605-610) for optimal binning: 3.49*sd*N^-1/3
-            float binWidth = (float) (3.49 * pars[7] * (float) Math.pow((float) count, -1.0 / 3.0));
-            nBins = (int) Math.floor(((pars[4] - pars[3]) / binWidth) + .5);
+            float binWidth = (float) (3.49 * pars[7] * (float) MathProxy.pow((float) count, -1.0 / 3.0));
+            nBins = (int) MathProxy.floor(((pars[4] - pars[3]) / binWidth) + .5);
             if(nBins < 2) {
                 nBins = 2;
             }
@@ -156,7 +157,7 @@ public class IJDistribution implements PlugIn, TextListener {
 
         for(i = 0; i < nc; i++) {
             s = data[i] - ave;
-            adev += Math.abs(s);
+            adev += MathProxy.abs(s);
             p = s * s;
             var += p;
             p *= s;
@@ -167,11 +168,11 @@ public class IJDistribution implements PlugIn, TextListener {
 
         adev /= nc;
         var /= nc - 1;
-        sdev = (float) Math.sqrt(var);
+        sdev = (float) MathProxy.sqrt(var);
 
         if(var > 0) {
-            skew = (float) skew / (nc * (float) Math.pow(sdev, 3));
-            kurt = (float) kurt / (nc * (float) Math.pow(var, 2)) - 3;
+            skew = (float) skew / (nc * (float) MathProxy.pow(sdev, 3));
+            kurt = (float) kurt / (nc * (float) MathProxy.pow(var, 2)) - 3;
         }
         pars[1] = (float) nc;
         pars[2] = totl;

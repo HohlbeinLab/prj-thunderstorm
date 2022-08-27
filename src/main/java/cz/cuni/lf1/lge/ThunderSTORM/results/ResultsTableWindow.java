@@ -12,6 +12,7 @@ import cz.cuni.lf1.lge.ThunderSTORM.rendering.IncrementalRenderingMethod;
 import cz.cuni.lf1.lge.ThunderSTORM.rendering.RenderingQueue;
 import cz.cuni.lf1.lge.ThunderSTORM.rendering.ui.ASHRenderingUI;
 import cz.cuni.lf1.lge.ThunderSTORM.rendering.ui.IRendererUI;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.PluginCommands;
 import cz.cuni.lf1.lge.ThunderSTORM.util.VectorMath;
 import ij.IJ;
@@ -197,10 +198,10 @@ public class ResultsTableWindow extends GenericTableWindow {
                 } else {
                     double[] xpos = rt.getColumnAsDoubles(LABEL_X, MoleculeDescriptor.Units.PIXEL);
                     double[] ypos = rt.getColumnAsDoubles(LABEL_Y, MoleculeDescriptor.Units.PIXEL);
-                    int left = Math.max((int) Math.floor(VectorMath.min(xpos)) - 1, 0);
-                    int top = Math.max((int) Math.floor(VectorMath.min(ypos)) - 1, 0);
-                    int right = (int) Math.ceil(VectorMath.max(xpos)) + 1;
-                    int bottom = (int) Math.ceil(VectorMath.max(ypos)) + 1;
+                    int left = MathProxy.max((int) MathProxy.floor(VectorMath.min(xpos)) - 1, 0);
+                    int top = MathProxy.max((int) MathProxy.floor(VectorMath.min(ypos)) - 1, 0);
+                    int right = (int) MathProxy.ceil(VectorMath.max(xpos)) + 1;
+                    int bottom = (int) MathProxy.ceil(VectorMath.max(ypos)) + 1;
                     renderer.setSize(left, top, right - left + 1, bottom - top + 1);
                 }
                 IncrementalRenderingMethod rendererImplementation = renderer.getImplementation();

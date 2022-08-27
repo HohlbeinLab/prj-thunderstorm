@@ -19,6 +19,7 @@ import cz.cuni.lf1.lge.ThunderSTORM.rendering.ui.IRendererUI;
 import cz.cuni.lf1.lge.ThunderSTORM.results.GenericTable;
 import cz.cuni.lf1.lge.ThunderSTORM.results.IJGroundTruthTable;
 import cz.cuni.lf1.lge.ThunderSTORM.util.GridBagHelper;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.VectorMath;
 import ij.IJ;
 import ij.ImagePlus;
@@ -57,8 +58,8 @@ public class RenderingPlugIn implements PlugIn {
     };
 
     public static Rectangle resizeByResults(double [] xpos, double [] ypos, double magnification) {
-        int left  = ((int)Math.max(VectorMath.min(xpos) * magnification, 0));
-        int top   = ((int)Math.max(VectorMath.min(ypos) * magnification, 0));
+        int left  = ((int) MathProxy.max(VectorMath.min(xpos) * magnification, 0));
+        int top   = ((int) MathProxy.max(VectorMath.min(ypos) * magnification, 0));
         int sizeX = (int)(VectorMath.max(xpos) * magnification) - left + 1;
         int sizeY = (int)(VectorMath.max(ypos) * magnification) - top  + 1;
         int mag   = (int)magnification;

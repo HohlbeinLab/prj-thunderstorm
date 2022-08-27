@@ -1,10 +1,10 @@
 package cz.cuni.lf1.lge.ThunderSTORM.calibration;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqr;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import cz.cuni.lf1.lge.ThunderSTORM.util.ArrayIndexComparator;
 import cz.cuni.lf1.lge.ThunderSTORM.util.IMatchable;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.LABEL_FRAME;
 
@@ -116,7 +116,7 @@ public class PSFSeparator {
         }
 
         private double getDistanceFromCentroid(double x, double y) {
-            return sqr(x - centroidX) + sqr(y - centroidY);
+            return MathProxy.sqr(x - centroidX) + MathProxy.sqr(y - centroidY);
         }
 
         public double[] getAsArray(String fieldName) {

@@ -3,6 +3,7 @@ package cz.cuni.lf1.lge.ThunderSTORM.estimators;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel.Params;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import ij.plugin.filter.Convolver;
 import ij.process.FloatProcessor;
 
@@ -134,7 +135,7 @@ public class RadialSymmetryFitter implements IOneLocationFitter {
 
         for(int i = 0; i < weights.length; i++) {
             float gradientMagnitude = dIdu[i] * dIdu[i] + dIdv[i] * dIdv[i];
-            double distanceToCentroid = Math.sqrt((xMesh[i] - xCentroid) * (xMesh[i] - xCentroid) + (yMesh[i] - yCentroid) * (yMesh[i] - yCentroid));
+            double distanceToCentroid = MathProxy.sqrt((xMesh[i] - xCentroid) * (xMesh[i] - xCentroid) + (yMesh[i] - yCentroid) * (yMesh[i] - yCentroid));
             weights[i] = (float) (gradientMagnitude / distanceToCentroid);
         }
         return weights;

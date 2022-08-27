@@ -22,6 +22,7 @@ import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.DoubleValidatorFacto
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.IntegerValidatorFactory;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.StringValidatorFactory;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.ValidatorException;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.VectorMath;
 import cz.cuni.lf1.lge.ThunderSTORM.util.WorkerThread;
 import ij.IJ;
@@ -496,8 +497,8 @@ public class ResultsDriftCorrection extends PostProcessingModule {
             plot.setFrameSize(1280, 720);
         }
         plot.setLimits(minFrame, driftCorrection.getMaxFrame(),
-                Math.min(VectorMath.min(driftCorrection.getDriftDataX()), VectorMath.min(driftCorrection.getDriftDataY())),
-                Math.max(VectorMath.max(driftCorrection.getDriftDataX()), VectorMath.max(driftCorrection.getDriftDataY())));
+                MathProxy.min(VectorMath.min(driftCorrection.getDriftDataX()), VectorMath.min(driftCorrection.getDriftDataY())),
+                MathProxy.max(VectorMath.max(driftCorrection.getDriftDataX()), VectorMath.max(driftCorrection.getDriftDataY())));
         plot.setColor(new Color(255, 128, 128));
         plot.addPoints(driftCorrection.getDriftDataFrame(), driftCorrection.getDriftDataX(), Plot.CROSS);
         plot.draw();

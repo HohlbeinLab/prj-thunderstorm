@@ -1,5 +1,7 @@
 package cz.cuni.lf1.lge.ThunderSTORM.calibration;
 
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
+
 public class CalibrationConfig {
     public double dist2thrZStackMatching;
     public int minimumFitsCount;
@@ -78,7 +80,7 @@ public class CalibrationConfig {
         }
 
         public int getInlierThreshold(int ptNum1, int ptNum2) {
-            return (int) Math.max(minPtNum, Math.round(thInlr * Math.min(ptNum1, ptNum2)));
+            return (int) MathProxy.max(minPtNum, MathProxy.round(thInlr * MathProxy.min(ptNum1, ptNum2)));
         }
     }
 }

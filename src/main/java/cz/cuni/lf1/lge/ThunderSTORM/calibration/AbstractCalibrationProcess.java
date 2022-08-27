@@ -328,7 +328,7 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
 
         double[] ratios = new double[sigma1AsArray.length];
         for(int i = 0; i < intensityAsArray.length; i++) {
-            ratios[i] = Math.max(sigma1AsArray[i], sigma2AsArray[i]) / Math.min(sigma1AsArray[i], sigma2AsArray[i]);
+            ratios[i] = MathProxy.max(sigma1AsArray[i], sigma2AsArray[i]) / MathProxy.min(sigma1AsArray[i], sigma2AsArray[i]);
             ratios[i] /= intensityAsArray[i];
         }
 

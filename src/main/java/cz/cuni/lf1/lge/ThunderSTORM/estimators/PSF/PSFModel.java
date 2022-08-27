@@ -1,10 +1,9 @@
 package cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF;
 
 import cz.cuni.lf1.lge.ThunderSTORM.IModule;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.log;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqr;
 
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.SubImage;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.VectorMath;
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
@@ -259,7 +258,7 @@ public abstract class PSFModel implements IModule {
                 double logLikelihood = 0;
                 for(int i = 0; i < expectedValues.length; i++) {
                     double expectedValue = expectedValues[i];
-                    double log = log(expectedValue);
+                    double log = MathProxy.log(expectedValue);
                     if(log < -1e6) {
                         log = -1e6;
                     }
@@ -287,7 +286,7 @@ public abstract class PSFModel implements IModule {
                     weight = maxWeight;
                 }
             }
-            chi2 += sqr(imageValues[i] - expectedValues[i]) * weight;
+            chi2 += MathProxy.sqr(imageValues[i] - expectedValues[i]) * weight;
         }
         return chi2;
     }

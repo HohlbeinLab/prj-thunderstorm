@@ -7,12 +7,12 @@ import cz.cuni.lf1.lge.ThunderSTORM.FormulaParser.SyntaxTree.RetVal;
 import cz.cuni.lf1.lge.ThunderSTORM.UI.GUI;
 import cz.cuni.lf1.lge.ThunderSTORM.UI.Help;
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.Units.NANOMETER;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqr;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.Units;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel;
 import cz.cuni.lf1.lge.ThunderSTORM.util.GridBagHelper;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MoleculeXYZComparator;
 import cz.cuni.lf1.lge.ThunderSTORM.util.WorkerThread;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.ParameterKey;
@@ -227,18 +227,18 @@ public class DuplicatesFilter extends PostProcessingModule {
                 for(int i = 0, count = frmol.size(); i < count; i++) {
                     Molecule mol = frmol.get(i);
                     int id = (int) mol.getParam(MoleculeDescriptor.LABEL_ID);  // zero-based indexing
-                    double uncertainty = sqr(getUncertaintyNm(mol));
-                    double radius = sqr(getRadiusNm(mol));
+                    double uncertainty = MathProxy.sqr(getUncertaintyNm(mol));
+                    double radius = MathProxy.sqr(getRadiusNm(mol));
                     //
                     if(filter[idToOrder.get(id)] == false) {
                         continue;
                     }
                     for(int j = i - 1; j >= 0; j--) {
-                        if(sqr(frmol.get(j).getX() - mol.getX()) > radius) {
+                        if(MathProxy.sqr(frmol.get(j).getX() - mol.getX()) > radius) {
                             break;
                         }
                         if(mol.dist2xy(frmol.get(j), NANOMETER) < radius) {
-                            if(uncertainty >= sqr(getUncertaintyNm(frmol.get(j)))) {
+                            if(uncertainty >= MathProxy.sqr(getUncertaintyNm(frmol.get(j)))) {
                                 filter[idToOrder.get(id)] = false;
                                 break;
                             }
@@ -249,11 +249,11 @@ public class DuplicatesFilter extends PostProcessingModule {
                         continue;
                     }
                     for(int j = i + 1; j < count; j++) {
-                        if(sqr(frmol.get(j).getX() - mol.getX()) > radius) {
+                        if(MathProxy.sqr(frmol.get(j).getX() - mol.getX()) > radius) {
                             break;
                         }
                         if(mol.dist2xy(frmol.get(j), NANOMETER) < radius) {
-                            if(uncertainty >= sqr(getUncertaintyNm(frmol.get(j)))) {
+                            if(uncertainty >= MathProxy.sqr(getUncertaintyNm(frmol.get(j)))) {
                                 filter[idToOrder.get(id)] = false;
                                 break;
                             }

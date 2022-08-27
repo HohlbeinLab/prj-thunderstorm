@@ -1,8 +1,8 @@
 package cz.cuni.lf1.lge.ThunderSTORM.estimators;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.abs;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 
 import java.util.Vector;
 
@@ -25,7 +25,7 @@ abstract public class MFA_AbstractFitter implements IOneLocationFitter {
         if(!mol.isSingleMolecule()) {
             Vector<Molecule> detections = new Vector<Molecule>();
             for(Molecule m : mol.getDetections()) {
-                if((abs(m.getX()) <= maxX) || (abs(m.getY()) <= maxY)) {
+                if((MathProxy.abs(m.getX()) <= maxX) || (MathProxy.abs(m.getY()) <= maxY)) {
                     detections.add(m);
                 }
             }
@@ -35,12 +35,12 @@ abstract public class MFA_AbstractFitter implements IOneLocationFitter {
     }
 
     protected boolean isOutOfRegion(Molecule mol, double maxXY) {
-        if((abs(mol.getX()) > maxXY) || (abs(mol.getY()) > maxXY)) {
+        if((MathProxy.abs(mol.getX()) > maxXY) || (MathProxy.abs(mol.getY()) > maxXY)) {
             return true;
         }
         if(!mol.isSingleMolecule()) {
             for(Molecule m : mol.getDetections()) {
-                if((abs(m.getX()) > maxXY) || (abs(m.getY()) > maxXY)) {
+                if((MathProxy.abs(m.getX()) > maxXY) || (MathProxy.abs(m.getY()) > maxXY)) {
                     return true;
                 }
             }

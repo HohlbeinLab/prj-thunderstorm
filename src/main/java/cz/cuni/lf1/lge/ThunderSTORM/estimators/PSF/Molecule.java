@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel.Params;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.*;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 
 public final class Molecule implements Comparable<Molecule>, IMatchable<Molecule> {
 
@@ -58,24 +58,24 @@ public final class Molecule implements Comparable<Molecule>, IMatchable<Molecule
     }
     
     public double getDist2(Molecule mol, Units distUnits) {
-        return sqr(getX(distUnits) - mol.getX(distUnits)) + sqr(getY(distUnits) - mol.getY(distUnits)) + sqr(getZ(distUnits) - mol.getZ(distUnits));
+        return MathProxy.sqr(getX(distUnits) - mol.getX(distUnits)) + MathProxy.sqr(getY(distUnits) - mol.getY(distUnits)) + MathProxy.sqr(getZ(distUnits) - mol.getZ(distUnits));
     }
 
     public double getDist2Lateral(Molecule mol, Units distUnits) {
-        return sqr(getX(distUnits) - mol.getX(distUnits)) + sqr(getY(distUnits) - mol.getY(distUnits));
+        return MathProxy.sqr(getX(distUnits) - mol.getX(distUnits)) + MathProxy.sqr(getY(distUnits) - mol.getY(distUnits));
     }
     
     public double getDist(Molecule mol, Units distUnits) {
-        return sqrt(getDist2(mol, distUnits));
+        return MathProxy.sqrt(getDist2(mol, distUnits));
     }
     public double getDistLateral(Molecule mol, Units distUnits) {
-        return sqrt(getDist2Lateral(mol, distUnits));
+        return MathProxy.sqrt(getDist2Lateral(mol, distUnits));
     }
-    public double getDistAxial(Molecule mol, Units distUnits) { return abs(getZ(distUnits) - mol.getZ(distUnits)); }
+    public double getDistAxial(Molecule mol, Units distUnits) { return MathProxy.abs(getZ(distUnits) - mol.getZ(distUnits)); }
 
     @Override
     public double getDist2(IMatchable mol) {
-        return sqr(getX() - mol.getX()) + sqr(getY() - mol.getY()) + sqr(getZ() - mol.getZ());
+        return MathProxy.sqr(getX() - mol.getX()) + MathProxy.sqr(getY() - mol.getY()) + MathProxy.sqr(getZ() - mol.getZ());
     }
 
     @Override
@@ -312,15 +312,15 @@ public final class Molecule implements Comparable<Molecule>, IMatchable<Molecule
     }
 
     public double dist2xy(Molecule mol, Units units) {
-        return (sqr(mol.getX(units) - getX(units)) + sqr(mol.getY(units) - getY(units)));
+        return (MathProxy.sqr(mol.getX(units) - getX(units)) + MathProxy.sqr(mol.getY(units) - getY(units)));
     }
 
     public double dist2z(Molecule mol, Units units) {
-        return sqr(mol.getZ(units) - getZ(units));
+        return MathProxy.sqr(mol.getZ(units) - getZ(units));
     }
 
     public double dist2xyz(Molecule mol, Units units) {
-        return (sqr(mol.getX(units) - getX(units)) + sqr(mol.getY(units) - getY(units)) + sqr(mol.getZ(units) - getZ(units)));
+        return (MathProxy.sqr(mol.getX(units) - getX(units)) + MathProxy.sqr(mol.getY(units) - getY(units)) + MathProxy.sqr(mol.getZ(units) - getZ(units)));
     }
 
     public void addDetection(Molecule mol) {

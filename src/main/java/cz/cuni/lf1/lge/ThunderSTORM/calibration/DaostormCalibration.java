@@ -1,6 +1,6 @@
 package cz.cuni.lf1.lge.ThunderSTORM.calibration;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.*;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 
 // sigma(z) = w0*sqrt(1 + ((z-c)/d)^2 + a*((z-c)/d)^3 + b*((z-c)/d)^4)
 public class DaostormCalibration extends DefocusCalibration {
@@ -30,13 +30,13 @@ public class DaostormCalibration extends DefocusCalibration {
 
     @Override
     public double evalDefocus(double z, double w0, double a, double b, double c, double d) {
-        return (w0/2.0 * sqrt(1 + sqr((z - c)/d) + a*pow((z - c)/d,3) + b*pow((z - c)/d,4)));
+        return (w0/2.0 * MathProxy.sqrt(1 + MathProxy.sqr((z - c)/d) + a*MathProxy.pow((z - c)/d,3) + b*MathProxy.pow((z - c)/d,4)));
     }
 
     private double dw(double z, double w0, double a, double b, double c, double d) {
         double zsubz0 = z - c;
-        return (w0 * (2*zsubz0/sqr(d) + 3*a*sqr(zsubz0)/pow(d,3) + 4*b*pow(zsubz0,3)/pow(d,4))) /
-                (2*sqrt(1 + sqr(zsubz0)/sqr(d) + a*pow(zsubz0,3)/pow(d,3) + b*pow(zsubz0,4)/pow(d,4)));
+        return (w0 * (2*zsubz0/ MathProxy.sqr(d) + 3*a*MathProxy.sqr(zsubz0)/MathProxy.pow(d,3) + 4*b*MathProxy.pow(zsubz0,3)/MathProxy.pow(d,4))) /
+                (2*MathProxy.sqrt(1 + MathProxy.sqr(zsubz0)/MathProxy.sqr(d) + a*MathProxy.pow(zsubz0,3)/MathProxy.pow(d,3) + b*MathProxy.pow(zsubz0,4)/MathProxy.pow(d,4)));
     }
 
     @Override
@@ -54,13 +54,13 @@ public class DaostormCalibration extends DefocusCalibration {
     @Override
     public double evalDefocus2(double z, double w0, double a, double b, double c, double d) {
         double zcd1 = (z - c) / d, zcd2 = zcd1 * zcd1, zcd3 = zcd2 * zcd1, zcd4 = zcd3 * zcd1;
-        return (sqr(w0/2.0) * (1 + zcd2 + a*zcd3 + b*zcd4));
+        return (MathProxy.sqr(w0/2.0) * (1 + zcd2 + a*zcd3 + b*zcd4));
     }
 
     private double dw2(double z, double w0, double a, double b, double c, double d) {
         double zc1 = z - c, zc2 = zc1 * zc1, zc3 = zc2 * zc1;
         double d2 = d * d, d3 = d2 * d, d4 = d3 * d;
-        return (sqr(w0/2.0) * (2*zc1/d2 + 3*a*zc2/d3 + 4*b*zc3/d4));
+        return (MathProxy.sqr(w0/2.0) * (2*zc1/d2 + 3*a*zc2/d3 + 4*b*zc3/d4));
     }
 
     @Override

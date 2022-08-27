@@ -28,7 +28,7 @@ object Convolution {
 
         val kw = kernel.width
         val kh = kernel.height
-        val padsize = MathProxy.ceil(java.lang.Math.max(kw, kh) / 2.0).toInt()
+        val padsize = MathProxy.ceil(MathProxy.max(kw, kh) / 2.0).toInt()
         val iw = image.width
         val ih = image.height
         //if(paddingType == Padding.PADDING_NONE) { iw -= 2*padsize; ih -= 2*padsize; }

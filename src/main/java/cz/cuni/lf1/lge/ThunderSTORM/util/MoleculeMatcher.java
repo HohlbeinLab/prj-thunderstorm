@@ -8,7 +8,6 @@ import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.LAB
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.LABEL_DISTANCE_TO_GROUND_TRUTH_XYZ;
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.LABEL_GROUND_TRUTH_ID;
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.LABEL_ID;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqrt;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.Units;
 import cz.cuni.lf1.lge.ThunderSTORM.util.javaml.kdtree.KDTree;
@@ -69,7 +68,7 @@ public class MoleculeMatcher {
                     // this might theoretically happen if two molecules are located at the same exact spot; but it is very unlikely
                 }
             }
-            double dist = sqrt(dist2Thr);
+            double dist = MathProxy.sqrt(dist2Thr);
             for (Molecule mol : det) {
                 FP.add(mol);
                 mol.addNeighbors(tree.range(

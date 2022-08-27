@@ -6,6 +6,8 @@ import cz.cuni.lf1.lge.ThunderSTORM.util.GridBagHelper;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.ParameterKey;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.DoubleValidatorFactory;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.IntegerValidatorFactory;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -54,7 +56,7 @@ public class CompoundWaveletFilterUI extends IFilterUI {
     public IFilter getImplementation() {
         scale = scaleParam.getValue();
         order = orderParam.getValue();
-        int size = 2 * (int) Math.ceil(order * scale / 2) - 1;
+        int size = 2 * (int) MathProxy.ceil(order * scale / 2) - 1;
         return new CompoundWaveletFilter(order, scale, size);
     }
 }

@@ -191,9 +191,9 @@ public class Homography {
             // calculate an isotropic scale
             double scale = 0;
             for (Position p : positions) {
-                scale += Math.sqrt(calcDist2(centroid, p));
+                scale += MathProxy.sqrt(calcDist2(centroid, p));
             }
-            scale /= (double) positions.size() * Math.sqrt(2);
+            scale /= (double) positions.size() * MathProxy.sqrt(2);
             // create a normalization matrix
             return TransformationMatrix.createFrom(new Array2DRowRealMatrix(new double[][]
                 {{1.0/scale, 0.0      , -centroid.centroidX/scale},
@@ -337,7 +337,7 @@ public class Homography {
     }
 
     private static double calcDist2(Position p1, Position p2) {
-        return Math.pow(p1.centroidX - p2.centroidX, 2) + Math.pow(p1.centroidY - p2.centroidY, 2);
+        return MathProxy.pow(p1.centroidX - p2.centroidX, 2) + MathProxy.pow(p1.centroidY - p2.centroidY, 2);
     }
 
     // Project pts1 to P1 using H, then calcultate the distances between P1 and P2; I is index into P2/pts2
@@ -376,7 +376,7 @@ public class Homography {
         final double[][] distMap = new double[pts1.size()][pts2.size()];
         for (int i = 0; i < pts1.size(); i++) {
             for (int j = 0; j < pts2.size(); j++) {
-                distMap[i][j] = Math.sqrt(calcDist2(pts1.get(i), pts2.get(j)));
+                distMap[i][j] = MathProxy.sqrt(calcDist2(pts1.get(i), pts2.get(j)));
             }
         }
         int[][] idxMap = new int[pts1.size()][pts2.size()];

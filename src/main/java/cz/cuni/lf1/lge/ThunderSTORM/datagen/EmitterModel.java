@@ -1,9 +1,9 @@
 package cz.cuni.lf1.lge.ThunderSTORM.datagen;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.max;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel.Params;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import ij.process.FloatProcessor;
 import java.awt.Rectangle;
 
@@ -19,13 +19,13 @@ public class EmitterModel {
         //
         region = 0;
         if(molecule.hasParam(Params.LABEL_SIGMA)) {
-            region = max(region, molecule.getParam(Params.LABEL_SIGMA));
+            region = MathProxy.max(region, molecule.getParam(Params.LABEL_SIGMA));
         }
         if(molecule.hasParam(Params.LABEL_SIGMA1)) {
-            region = max(region, molecule.getParam(Params.LABEL_SIGMA1));
+            region = MathProxy.max(region, molecule.getParam(Params.LABEL_SIGMA1));
         } 
         if(molecule.hasParam(Params.LABEL_SIGMA2)) {
-            region = max(region, molecule.getParam(Params.LABEL_SIGMA2));
+            region = MathProxy.max(region, molecule.getParam(Params.LABEL_SIGMA2));
         } 
         region *= 5;
     }

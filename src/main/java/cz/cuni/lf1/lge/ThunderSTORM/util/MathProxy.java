@@ -1,10 +1,11 @@
 package cz.cuni.lf1.lge.ThunderSTORM.util;
 
-import org.apache.commons.math3.util.FastMath;
+import org.apache.commons.math3.ml.distance.EuclideanDistance;
+import net.jafama.FastMath;
 
 /**
  * This class wraps mathematical functions used in ThunderSTORM.
- *
+ * <p>
  * The reason for this is that the common java.lang.Math class is missing some
  * of the methods we need to use. Also the methods in the class are a bit slow
  * for our needs. So it is more convenient to have this class (Adapter pattern)
@@ -15,11 +16,12 @@ import org.apache.commons.math3.util.FastMath;
  * {@code exp}) than the general Java Math class.
  */
 public class MathProxy {
-
     /**
      * PI constant ({@mathjax \pi}).
      */
-    public static final double PI = org.apache.commons.math3.util.FastMath.PI;
+    public static final double PI = FastMath.PI;
+
+    public static final EuclideanDistance euclideanDistance = new EuclideanDistance();
 
     /**
      * Raise a double to an int power.
@@ -29,7 +31,7 @@ public class MathProxy {
      * @return {@mathjax x^n}
      */
     public static double pow(double x, int n) {
-        return org.apache.commons.math3.util.FastMath.pow(x, n);
+        return FastMath.pow(x, n);
     }
 
     /**
@@ -40,78 +42,15 @@ public class MathProxy {
      * @return {@mathjax x^n}
      */
     public static double pow(double x, double n) {
-        return org.apache.commons.math3.util.FastMath.pow(x, n);
+        return FastMath.pow(x, n);
     }
 
-    /**
-     * Exponential function.
-     *
-     * @param x a value
-     * @return {@mathjax \mathrm{e}^x}
-     */
-    public static double exp(double x) {
-        return org.apache.commons.math3.util.FastMath.exp(x);
-    }
-    
-    /**
-     * Natural logarithm.
-     *
-     * @param x a value
-     * @return {@mathjax \mathrm{log}(x)}
-     */
-    public static double log(double x) {
-        return org.apache.commons.math3.util.FastMath.log(x);
-    }
-
-    /**
-     * Get the smallest whole number larger than x.
-     *
-     * @param x number from which ceil is requested
-     * @return {@mathjax \lceil x \rceil}
-     */
-    public static double ceil(double x) {
-        return org.apache.commons.math3.util.FastMath.ceil(x);
-    }
-
-    /**
-     * Compute the maximum of two values.
-     *
-     * @param a first value
-     * @param b second value
-     * @return b if a is lesser or equal to b, a otherwise
-     */
-    public static int max(int a, int b) {
-        return org.apache.commons.math3.util.FastMath.max(a, b);
-    }
-
-    /**
-     * Get the closest long to x.
-     *
-     * @param x number from which closest long is requested
-     * @return closest long to x
-     */
-    public static long round(double x) {
-        return org.apache.commons.math3.util.FastMath.round(x);
-    }
-
-    /**
-     * Get the closest int to x.
-     *
-     * @param x number from which closest int is requested
-     * @return closest int to x
-     */
-    public static int round(float x) {
-        return org.apache.commons.math3.util.FastMath.round(x);
-    }
-
-    /**
-     * Compute the square root of a number.
-     *
-     * @param x number on which evaluation is done
-     * @return {@mathjax \sqrt{a}}
-     */
-    public static double sqrt(double x) {
-        return org.apache.commons.math3.util.FastMath.sqrt(x);
+    public static int nextPowerOf2(int num) {
+        int powOf2 = 1;
+        while (powOf2 < num) {
+            powOf2 <<= 1;
+        }
+        return powOf2;
     }
 
     /**
@@ -125,25 +64,110 @@ public class MathProxy {
     }
 
     /**
-     * Evaluates the 1D Gaussian function at a given point {@code x} and with a
-     * given width {@code sigma}.
+     * Exponential function.
      *
-     * @param x a point where the function will get evaluated
-     * @param sigma {@mathjax \sigma} is a width of the Gaussian function
-     * @param normalized decides wheter the Gaussian should be normalized to
-     * have its integral equal to 1
-     * @return if {@code normalized} is {@code true} then the function returns
-     * {@mathjax \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{x^2}{2 \sigma^2}}}, else
-     * the function returns {@mathjax e^{-\frac{x^2}{2 \sigma^2}}}.
+     * @param x a value
+     * @return {@mathjax \mathrm{e}^x}
      */
-    public static double gauss(double x, double sigma, boolean normalized) {
-        return exp(-0.5 * sqr(x / sigma)) / ((normalized) ? (sigma * sqrt(2 * PI)) : 1);
+    public static double exp(double x) {
+        return FastMath.exp(x);
     }
 
-    public static Double abs(double val) { return java.lang.Math.abs(val); }
+    /**
+     * Natural logarithm.
+     *
+     * @param x a value
+     * @return {@mathjax \mathrm{log}(x)}
+     */
+    public static double log(double x) {
+        return FastMath.log(x);
+    }
 
-    public static Double abs(Double val) {
-        return new Double(java.lang.Math.abs(val.doubleValue()));
+    /**
+     * Get the smallest whole number larger than x.
+     *
+     * @param x number from which ceil is requested
+     * @return {@mathjax \lceil x \rceil}
+     */
+    public static double ceil(double x) {
+        return FastMath.ceil(x);
+    }
+
+    public static double floor(double x) {
+        return FastMath.floor(x);
+    }
+
+    /**
+     * Compute the maximum of two values.
+     *
+     * @param a first value
+     * @param b second value
+     * @return b if a is lesser or equal to b, a otherwise
+     */
+    public static int max(int a, int b) {
+        return FastMath.max(a, b);
+    }
+
+    public static double max(double a, double b) {
+        return FastMath.max(a, b);
+    }
+
+    public static double max(double... values) {
+        double max = values[0];
+
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] > max) {
+                max = values[i];
+            }
+        }
+
+        return max;
+    }
+
+    public static int min(int a, int b) {
+        return FastMath.min(a, b);
+    }
+
+    public static double min(double a, double b) {
+        return FastMath.min(a, b);
+    }
+
+    /**
+     * Get the closest long to x.
+     *
+     * @param x number from which closest long is requested
+     * @return closest long to x
+     */
+    public static long round(double x) {
+        return FastMath.round(x);
+    }
+
+    /**
+     * Get the closest int to x.
+     *
+     * @param x number from which closest int is requested
+     * @return closest int to x
+     */
+    public static int round(float x) {
+        return FastMath.round(x);
+    }
+
+    public static int roundToInt(double x) {
+        return FastMath.roundToInt(x);
+    }
+
+    /**
+     * Compute the square root of a number.
+     *
+     * @param x number on which evaluation is done
+     * @return {@mathjax \sqrt{a}}
+     */
+    public static double sqrt(double x) {
+        return FastMath.sqrt(x);
+    }
+
+    public static Double abs(double val) {
+        return FastMath.abs(val);
     }
 
     public static double toRadians(Double get) {
@@ -165,69 +189,41 @@ public class MathProxy {
     public static double atan2(double y, double x) {
         return FastMath.atan2(y, x);
     }
-    
+
     public static double atan(double x) {
         return FastMath.atan(x);
     }
-    
+
     public static double tan(double x) {
         return FastMath.tan(x);
     }
 
-    public static int min(int a, int b) {
-        return FastMath.min(a, b);
-    }
-
-    public static double min(double a, double b) {
-        return FastMath.min(a, b);
-    }
-
-    public static double max(double a, double b) {
-        return FastMath.max(a, b);
-    }
-    
-    public static double max(double... values) {
-        double max = values[0];
-        for(int i = 1; i < values.length; i++) {
-            if(values[i] > max) {
-                max = values[i];
-            }
-        }
-        return max;
-    }
-    
-    public static int [] genIntSequence(int from, int length) {
-        int [] seq = new int[length];
-        for(int i = 0; i < length; i++) {
+    public static int[] genIntSequence(int from, int length) {
+        int[] seq = new int[length];
+        for (int i = 0; i < length; i++) {
             seq[i] = from + i;
         }
         return seq;
     }
 
-    public static int nextPowerOf2(int num) {
-        int powof2 = 1;
-        while(powof2 < num) {
-            powof2 <<= 1;
-        }
-        return powof2;
+    /**
+     * Evaluates the 1D Gaussian function at a given point {@code x} and with a
+     * given width {@code sigma}.
+     *
+     * @param x a point where the function will get evaluated
+     * @param sigma {@mathjax \sigma} is a width of the Gaussian function
+     * @param normalized decides wheter the Gaussian should be normalized to
+     * have its integral equal to 1
+     * @return if {@code normalized} is {@code true} then the function returns
+     * {@mathjax \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{x^2}{2 \sigma^2}}}, else
+     * the function returns {@mathjax e^{-\frac{x^2}{2 \sigma^2}}}.
+     */
+    public static double gauss(double x, double sigma, boolean normalized) {
+        return exp(-0.5 * sqr(x / sigma)) / ((normalized) ? (sigma * sqrt(2 * PI)) : 1);
     }
 
     public static double euclidDist2(double[] a, double[] b) {
-        double dist2 = 0.0;
-        int i = 0, im = min(a.length, b.length);
-        for ( ; i < im; i++) {
-            dist2 += sqr(a[i] - b[i]);
-        }
-        if (a.length > b.length) {
-            for ( ; i < a.length; i++) {
-                dist2 += sqr(a[i]);
-            }
-        } else if (b.length > a.length) {
-            for ( ; i < b.length; i++) {
-                dist2 += sqr(b[i]);
-            }
-        }
-        return dist2;
+        return euclideanDistance.compute(a, b);
     }
 
     public static double euclidDist(double[] a, double[] b) {

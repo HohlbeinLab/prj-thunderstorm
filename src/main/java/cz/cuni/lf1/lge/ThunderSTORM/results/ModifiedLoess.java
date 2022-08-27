@@ -18,6 +18,8 @@ package cz.cuni.lf1.lge.ThunderSTORM.results;
 
 import java.io.Serializable;
 import java.util.Arrays;
+
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import org.apache.commons.collections.primitives.ArrayDoubleList;
 import org.apache.commons.collections.primitives.DoubleList;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
@@ -32,7 +34,6 @@ import org.apache.commons.math3.exception.NumberIsTooSmallException;
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 import org.apache.commons.math3.exception.NotFiniteNumberException;
 import org.apache.commons.math3.exception.util.LocalizedFormats;
-import org.apache.commons.math3.util.FastMath;
 import org.apache.commons.math3.util.MathUtils;
 import org.apache.commons.math3.util.MathArrays;
 
@@ -316,7 +317,7 @@ public class ModifiedLoess
                 double sumXSquared = 0;
                 double sumY = 0;
                 double sumXY = 0;
-                double denom = FastMath.abs(1.0 / (xval[edge] - x));
+                double denom = MathProxy.abs(1.0 / (xval[edge] - x));
                 for (int k = ileft; k <= iright; ++k) {
                     final double xk   = xval[k];
                     final double yk   = yval[k];
@@ -336,7 +337,7 @@ public class ModifiedLoess
                 final double meanXSquared = sumXSquared / sumWeights;
 
                 final double beta;
-                if (FastMath.sqrt(FastMath.abs(meanXSquared - meanX * meanX)) < accuracy) {
+                if (MathProxy.sqrt(MathProxy.abs(meanXSquared - meanX * meanX)) < accuracy) {
                     beta = 0;
                 } else {
                     beta = (meanXY - meanX * meanY) / (meanXSquared - meanX * meanX);
@@ -345,7 +346,7 @@ public class ModifiedLoess
                 final double alpha = meanY - beta * meanX;
 
                 res[i] = beta * x + alpha;
-                residuals[i] = FastMath.abs(yval[i] - res[i]);
+                residuals[i] = MathProxy.abs(yval[i] - res[i]);
             }
 
             // No need to recompute the robustness weights at the last
@@ -363,7 +364,7 @@ public class ModifiedLoess
             Arrays.sort(sortedResiduals);
             final double medianResidual = sortedResiduals[n / 2];
 
-            if (FastMath.abs(medianResidual) < accuracy) {
+            if (MathProxy.abs(medianResidual) < accuracy) {
                 break;
             }
 
@@ -470,7 +471,7 @@ public class ModifiedLoess
      * @return <code>(1 - |x|<sup>3</sup>)<sup>3</sup></code> for |x| &lt; 1, 0 otherwise.
      */
     private static double tricube(final double x) {
-        final double absX = FastMath.abs(x);
+        final double absX = MathProxy.abs(x);
         if (absX >= 1.0) {
             return 0.0;
         }

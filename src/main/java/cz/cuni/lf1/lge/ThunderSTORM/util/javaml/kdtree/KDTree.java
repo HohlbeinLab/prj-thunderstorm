@@ -26,6 +26,8 @@
 package cz.cuni.lf1.lge.ThunderSTORM.util.javaml.kdtree;
 
 
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -305,7 +307,7 @@ public class KDTree <T> {
             KDNode<T> n = v.elementAt(i);
             double sqrdist = HPoint.sqrdist(n.k, wrappedQueryPoint);
             if(sqrdist < squaredMaxDistance){
-                retVal.add(new DistAndValue<T>(Math.sqrt(sqrdist), n.v));
+                retVal.add(new DistAndValue<T>(MathProxy.sqrt(sqrdist), n.v));
             }
         }
         return retVal;

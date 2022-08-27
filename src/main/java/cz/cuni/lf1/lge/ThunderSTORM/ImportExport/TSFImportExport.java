@@ -13,7 +13,6 @@ import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel;
 import cz.cuni.lf1.lge.ThunderSTORM.results.GenericTable;
 import cz.cuni.lf1.lge.ThunderSTORM.util.IOUtils;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqrt;
 import ij.IJ;
 import java.awt.Rectangle;
 import java.io.BufferedInputStream;
@@ -31,7 +30,6 @@ import java.util.List;
 import java.util.Set;
 import org.apache.commons.collections.primitives.ArrayDoubleList;
 import org.apache.commons.collections.primitives.DoubleList;
-import static org.apache.commons.math3.util.FastMath.log;
 
 public class TSFImportExport implements IImportExport {
 
@@ -43,7 +41,7 @@ public class TSFImportExport implements IImportExport {
 
         RandomAccessFile inputFile = null;
         InputStream inputStream = null;
-        double FWHM_factor = 2 * sqrt(2 * log(2));
+        double FWHM_factor = 2 * MathProxy.sqrt(2 * MathProxy.log(2));
 
         try {
             inputFile = new RandomAccessFile(fp, "r");
@@ -190,7 +188,7 @@ public class TSFImportExport implements IImportExport {
         int nrows = table.getRowCount();
         Set<String> columnsSet = new HashSet<String>(columns);
 
-        double FWHM_factor = 2 * sqrt(2 * log(2));  //tsf requires fwhm but we use stdev
+        double FWHM_factor = 2 * MathProxy.sqrt(2 * MathProxy.log(2));  //tsf requires fwhm but we use stdev
         //use same units for all locations and same units for all intensities in TSF format
         Units locationUnits = table.getColumnUnits(PSFModel.Params.LABEL_X);
         Units intensityUnits = table.getColumnUnits(PSFModel.Params.LABEL_INTENSITY);
@@ -375,8 +373,8 @@ public class TSFImportExport implements IImportExport {
                 minY = y;
             }
         }
-        double minXInt = Math.floor(minX);
-        double minYInt = Math.floor(minY);
-        return new Rectangle((int) minXInt, (int) minYInt, (int) (Math.ceil(maxX) - minXInt), (int) (Math.ceil(maxY) - minYInt));
+        double minXInt = MathProxy.floor(minX);
+        double minYInt = MathProxy.floor(minY);
+        return new Rectangle((int) minXInt, (int) minYInt, (int) (MathProxy.ceil(maxX) - minXInt), (int) (MathProxy.ceil(maxY) - minYInt));
     }
 }

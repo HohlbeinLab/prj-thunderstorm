@@ -179,7 +179,7 @@ public class MultipleLocationsBiplaneFitting implements IBiplaneEstimator {
     }
 
     private boolean checkIsInSubimage(double xinit, double yinit, double x, double y) {
-        return !(Math.abs(x - xinit) > ((double)subimageSize + 0.5) || Math.abs(y - yinit) > ((double)subimageSize + 0.5));
+        return !(MathProxy.abs(x - xinit) > ((double)subimageSize + 0.5) || MathProxy.abs(y - yinit) > ((double)subimageSize + 0.5));
     }
 
     @Override

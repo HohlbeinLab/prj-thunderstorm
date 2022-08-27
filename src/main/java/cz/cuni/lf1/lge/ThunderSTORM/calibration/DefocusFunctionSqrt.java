@@ -1,12 +1,9 @@
 package cz.cuni.lf1.lge.ThunderSTORM.calibration;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.abs;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqrt;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqr;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.pow;
-
 import java.util.Arrays;
 import java.util.Locale;
+
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import org.apache.commons.math3.analysis.ParametricUnivariateFunction;
 
 import javax.swing.*;
@@ -56,7 +53,7 @@ public class DefocusFunctionSqrt extends DefocusFunction {
     public double[] transformParamsInverse(double[] params) {
         double [] trans = Arrays.copyOf(params, params.length);
         trans[2] = 0;
-        trans[3] = sqrt(abs(params[3]));
+        trans[3] = MathProxy.sqrt(MathProxy.abs(params[3]));
         return trans;
     }
 
@@ -67,7 +64,7 @@ public class DefocusFunctionSqrt extends DefocusFunction {
     @Override
     public double value(double z, double w0, double a, double b, double c, double d) {
         double xsubx0 = z - c;
-        return 0.5*w0*sqrt(1 + sqr(xsubx0/d) + a*pow(xsubx0/d,3) + b*pow(xsubx0/d,4));
+        return 0.5*w0*MathProxy.sqrt(1 + MathProxy.sqr(xsubx0/d) + a*MathProxy.pow(xsubx0/d,3) + b*MathProxy.pow(xsubx0/d,4));
     }
 
     @Override
@@ -85,12 +82,12 @@ public class DefocusFunctionSqrt extends DefocusFunction {
                 double xsubx0 = x - trans[1];
                 double[] gradients = new double[5];
                 // Partial derivatives of: w0*sqrt(1 + ((z-c)/d)^2 + a*((z-c)/d)^3 + b*((z-c)/d)^4)
-                double dd = sqrt(1 + sqr(xsubx0/trans[4]) + trans[2]*pow(xsubx0/trans[4],3) + trans[3]*pow(xsubx0/trans[4],4));
+                double dd = MathProxy.sqrt(1 + MathProxy.sqr(xsubx0/trans[4]) + trans[2]*MathProxy.pow(xsubx0/trans[4],3) + trans[3]*MathProxy.pow(xsubx0/trans[4],4));
                 gradients[0] = 0.50*dd;
-                gradients[1] = 0.25*trans[0]*(-2*xsubx0/sqr(trans[4]) - 3*trans[2]*sqr(xsubx0)/pow(trans[4],3) - 4*trans[3]*pow(xsubx0,3)/pow(trans[4],4))/dd;
-                gradients[2] = 0.25*trans[0]*pow(xsubx0,3)/pow(trans[4],3)/dd;
-                gradients[3] = 0.25*trans[0]*pow(xsubx0,4)/pow(trans[4],4)/dd;
-                gradients[4] = 0.25*trans[0]*(-2*sqr(xsubx0)/pow(trans[4],3) - 3*trans[2]*pow(xsubx0,3)/pow(trans[4],4) - 4*trans[3]*pow(xsubx0,4)/pow(trans[4],5))/dd;
+                gradients[1] = 0.25*trans[0]*(-2*xsubx0/MathProxy.sqr(trans[4]) - 3*trans[2]*MathProxy.sqr(xsubx0)/MathProxy.pow(trans[4],3) - 4*trans[3]*MathProxy.pow(xsubx0,3)/MathProxy.pow(trans[4],4))/dd;
+                gradients[2] = 0.25*trans[0]*MathProxy.pow(xsubx0,3)/MathProxy.pow(trans[4],3)/dd;
+                gradients[3] = 0.25*trans[0]*MathProxy.pow(xsubx0,4)/MathProxy.pow(trans[4],4)/dd;
+                gradients[4] = 0.25*trans[0]*(-2*MathProxy.sqr(xsubx0)/MathProxy.pow(trans[4],3) - 3*trans[2]*MathProxy.pow(xsubx0,3)/MathProxy.pow(trans[4],4) - 4*trans[3]*MathProxy.pow(xsubx0,4)/MathProxy.pow(trans[4],5))/dd;
                 return gradients;
             }
         };

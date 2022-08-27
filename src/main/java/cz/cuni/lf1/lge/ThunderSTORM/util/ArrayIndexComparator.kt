@@ -9,6 +9,6 @@ class ArrayIndexComparator(private val mArray: DoubleArray) : Comparator<Int> {
     }
 
     override fun compare(index1: Int, index2: Int): Int {
-        return Math.ceil(mArray[index1] - mArray[index2]).toInt()
+        return MathProxy.ceil(mArray[index1] - mArray[index2]).toInt()
     }
 }

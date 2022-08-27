@@ -1,7 +1,5 @@
 package cz.cuni.lf1.lge.ThunderSTORM.util;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.round;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.ceil;
 import ij.gui.Roi;
 import java.util.Comparator;
 import java.util.List;
@@ -149,9 +147,9 @@ public class Point<T extends Number> {
         assert ((x != null) && (y != null));
 
         if(val == null) {
-            return new Point<Integer>(round(this.x.floatValue()), round(this.y.floatValue()));
+            return new Point<Integer>(MathProxy.round(this.x.floatValue()), MathProxy.round(this.y.floatValue()));
         } else {
-            return new Point<Integer>(round(this.x.floatValue()), round(this.y.floatValue()), round(this.val.floatValue()));
+            return new Point<Integer>(MathProxy.round(this.x.floatValue()), MathProxy.round(this.y.floatValue()), MathProxy.round(this.val.floatValue()));
         }
     }
 
@@ -164,9 +162,9 @@ public class Point<T extends Number> {
         assert ((x != null) && (y != null));
 
         if(val == null) {
-            return new Point<Long>(round(this.x.doubleValue()), round(this.y.doubleValue()));
+            return new Point<Long>(MathProxy.round(this.x.doubleValue()), MathProxy.round(this.y.doubleValue()));
         } else {
-            return new Point<Long>(round(this.x.doubleValue()), round(this.y.doubleValue()), round(this.val.doubleValue()));
+            return new Point<Long>(MathProxy.round(this.x.doubleValue()), MathProxy.round(this.y.doubleValue()), MathProxy.round(this.val.doubleValue()));
         }
     }
 
@@ -393,9 +391,9 @@ public class Point<T extends Number> {
             double px1 = p1.x.doubleValue(), px2 = p2.x.doubleValue();
             double py1 = p1.y.doubleValue(), py2 = p2.y.doubleValue();
             if(px1 == px2) {
-                return (int) ceil(py1 - py2);
+                return (int) MathProxy.ceil(py1 - py2);
             }
-            return (int) ceil(px1 - px2);
+            return (int) MathProxy.ceil(px1 - px2);
         }
     }
 

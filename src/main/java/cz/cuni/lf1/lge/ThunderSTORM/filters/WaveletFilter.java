@@ -1,7 +1,7 @@
 package cz.cuni.lf1.lge.ThunderSTORM.filters;
 
 import cz.cuni.lf1.lge.ThunderSTORM.util.BSplines;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.pow;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.Padding;
 import ij.process.FloatProcessor;
 import java.util.Arrays;
@@ -73,7 +73,7 @@ public class WaveletFilter {
         if(plane == 1) {
             return spline;
         } else {
-            int step = (int)pow(2, plane-1);
+            int step = (int) MathProxy.pow(2, plane-1);
             int n = (step * (n_samples - 1)) + 1;
             double [] kernel = new double[n];
             Arrays.fill(kernel, 0.0);

@@ -26,7 +26,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.*;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 
 public class PerformanceEvaluationPlugIn implements PlugIn {
 
@@ -97,7 +97,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
                 return;
             }
 
-            runEvaluation(dialog.getFrameByFrame(), dialog.getEvaluationSpace().equals("xyz"), sqr(dialog.getToleranceRadius()), distUnits);
+            runEvaluation(dialog.getFrameByFrame(), dialog.getEvaluationSpace().equals("xyz"), MathProxy.sqr(dialog.getToleranceRadius()), distUnits);
         } catch (Exception ex) {
             IJ.handleException(ex);
         }
@@ -202,7 +202,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
         //
         ResultsTable rt = ResultsTable.getResultsTable();
         rt.incrementCounter();
-        rt.addValue("Distance radius [" + distUnits.getLabel()+ "]", sqrt(dist2Tol));
+        rt.addValue("Distance radius [" + distUnits.getLabel()+ "]", MathProxy.sqrt(dist2Tol));
         rt.addValue("# of TP", tp);
         rt.addValue("# of FP", fp);
         rt.addValue("# of FN", fn);
@@ -227,7 +227,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSExyz(List<Pair<Molecule, Molecule>> pairs, Units units) {
         double err_sum = 0.0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += sqrt(pair.first.dist2xyz(pair.second, units));
+            err_sum += MathProxy.sqrt(pair.first.dist2xyz(pair.second, units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -235,7 +235,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSExy(List<Pair<Molecule, Molecule>> pairs, Units units) {
         double err_sum = 0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += sqrt(pair.first.dist2xy(pair.second, units));
+            err_sum += MathProxy.sqrt(pair.first.dist2xy(pair.second, units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -243,7 +243,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSEz(List<Pair<Molecule, Molecule>> pairs, Units units) {
         double err_sum = 0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += sqrt(pair.first.dist2z(pair.second, units));
+            err_sum += MathProxy.sqrt(pair.first.dist2z(pair.second, units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -251,7 +251,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSEx(List<Pair<Molecule, Molecule>> pairs, Units units){
         double err_sum = 0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += abs(pair.first.getX(units) - pair.second.getX(units));
+            err_sum += MathProxy.abs(pair.first.getX(units) - pair.second.getX(units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -259,7 +259,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSEy(List<Pair<Molecule, Molecule>> pairs, Units units){
         double err_sum = 0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += abs(pair.first.getY(units) - pair.second.getY(units));
+            err_sum += MathProxy.abs(pair.first.getY(units) - pair.second.getY(units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -271,7 +271,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     }
 
     private int getFrameCount() {
-        return (int) max(VectorMath.max(IJResultsTable.getResultsTable().getColumnAsDoubles(MoleculeDescriptor.LABEL_FRAME)),
+        return (int) MathProxy.max(VectorMath.max(IJResultsTable.getResultsTable().getColumnAsDoubles(MoleculeDescriptor.LABEL_FRAME)),
             VectorMath.max(IJGroundTruthTable.getGroundTruthTable().getColumnAsDoubles(MoleculeDescriptor.LABEL_FRAME)));
     }
     

@@ -1,6 +1,7 @@
 package cz.cuni.lf1.lge.ThunderSTORM.UI;
 
 import cz.cuni.lf1.lge.ThunderSTORM.JarFirstClassLoader;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import ij.IJ;
 import ij.plugin.BrowserLauncher;
 import java.awt.Cursor;
@@ -111,7 +112,7 @@ public class HelpButton extends JButton {
         window.setVisible(false);
         // same height as parent window of the button, positioned next to it on left or right side
         Window ancestor = SwingUtilities.getWindowAncestor(this);
-        window.setPreferredSize(new Dimension(WINDOW_WIDTH, Math.max(ancestor.getHeight(), WINDOW_HEIGHT)));
+        window.setPreferredSize(new Dimension(WINDOW_WIDTH, MathProxy.max(ancestor.getHeight(), WINDOW_HEIGHT)));
         int screenEnd = ancestor.getGraphicsConfiguration().getBounds().width + ancestor.getGraphicsConfiguration().getBounds().x;
         Point ancestorLocation = ancestor.getLocationOnScreen();
         if(ancestorLocation.x + ancestor.getWidth() + window.getPreferredSize().width < screenEnd) {

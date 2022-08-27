@@ -3,8 +3,7 @@ package cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF;
 import cz.cuni.lf1.lge.ThunderSTORM.calibration.DefocusCalibration;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.SubImage;
 import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.*;
-import static java.lang.Math.abs;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import java.util.Arrays;
 
 /**
@@ -19,15 +18,15 @@ public class EllipticGaussianPSF extends PSFModel {
     public EllipticGaussianPSF(double defaultSigma, double angle) {
         this.defaultSigma = defaultSigma;
         this.fi = angle;
-        this.sinfi = Math.sin(fi);
-        this.cosfi = Math.cos(fi);
+        this.sinfi = MathProxy.sin(fi);
+        this.cosfi = MathProxy.cos(fi);
     }
 
     public EllipticGaussianPSF(DefocusCalibration calibration) {
         this.calibration = calibration;
         this.fi = calibration.getAngle();
-        this.sinfi = Math.sin(fi);
-        this.cosfi = Math.cos(fi);
+        this.sinfi = MathProxy.sin(fi);
+        this.cosfi = MathProxy.cos(fi);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class EllipticGaussianPSF extends PSFModel {
             params[Params.SIGMA2] = calibration.getSigma2Squared(params[Params.Z]);
         }
 
-        return params[Params.INTENSITY] * exp(-0.5 * (sqr(dx)/params[Params.SIGMA1] + sqr(dy)/params[Params.SIGMA2])) + params[Params.OFFSET];
+        return params[Params.INTENSITY] * MathProxy.exp(-0.5 * (MathProxy.sqr(dx)/params[Params.SIGMA1] + MathProxy.sqr(dy)/params[Params.SIGMA2])) + params[Params.OFFSET];
     }
 
     @Override
@@ -50,11 +49,11 @@ public class EllipticGaussianPSF extends PSFModel {
             transformed[Params.SIGMA1] = calibration.getSigma1Squared(parameters[Params.Z]);
             transformed[Params.SIGMA2] = calibration.getSigma2Squared(parameters[Params.Z]);
         } else {
-            transformed[Params.SIGMA1] = sqr(parameters[Params.SIGMA1]);
-            transformed[Params.SIGMA2] = sqr(parameters[Params.SIGMA2]);
+            transformed[Params.SIGMA1] = MathProxy.sqr(parameters[Params.SIGMA1]);
+            transformed[Params.SIGMA2] = MathProxy.sqr(parameters[Params.SIGMA2]);
         }
-        transformed[Params.INTENSITY] = sqr(parameters[Params.INTENSITY]);
-        transformed[Params.OFFSET] = sqr(parameters[Params.OFFSET]);
+        transformed[Params.INTENSITY] = MathProxy.sqr(parameters[Params.INTENSITY]);
+        transformed[Params.OFFSET] = MathProxy.sqr(parameters[Params.OFFSET]);
         return transformed;
     }
 
@@ -65,11 +64,11 @@ public class EllipticGaussianPSF extends PSFModel {
             transformed[Params.SIGMA1] = calibration.getSigma1Squared(parameters[Params.Z]);
             transformed[Params.SIGMA2] = calibration.getSigma2Squared(parameters[Params.Z]);
         } else {
-            transformed[Params.SIGMA1] = sqrt(abs(parameters[Params.SIGMA1]));
-            transformed[Params.SIGMA2] = sqrt(abs(parameters[Params.SIGMA2]));
+            transformed[Params.SIGMA1] = MathProxy.sqrt(MathProxy.abs(parameters[Params.SIGMA1]));
+            transformed[Params.SIGMA2] = MathProxy.sqrt(MathProxy.abs(parameters[Params.SIGMA2]));
         }
-        transformed[Params.INTENSITY] = sqrt(abs(parameters[Params.INTENSITY]));
-        transformed[Params.OFFSET] = sqrt(abs(parameters[Params.OFFSET]));
+        transformed[Params.INTENSITY] = MathProxy.sqrt(MathProxy.abs(parameters[Params.INTENSITY]));
+        transformed[Params.OFFSET] = MathProxy.sqrt(MathProxy.abs(parameters[Params.OFFSET]));
         return transformed;
     }
 
@@ -87,7 +86,7 @@ public class EllipticGaussianPSF extends PSFModel {
                     double cosfiXd = cosfi * xd, cosfiYd = cosfi * yd;
                     double sinfiYd = sinfi * yd, sinfiXd = sinfi * xd;
                     double first = cosfiXd - sinfiYd, second = sinfiXd + cosfiYd;
-                    double expVal = exp(-0.5 * (sqr(first)/transformedPoint[Params.SIGMA1] + sqr(second)/transformedPoint[Params.SIGMA2]));
+                    double expVal = MathProxy.exp(-0.5 * (MathProxy.sqr(first)/transformedPoint[Params.SIGMA1] + MathProxy.sqr(second)/transformedPoint[Params.SIGMA2]));
                     // diff(psf, x0)
                     double pom1 =  first*cosfi/transformedPoint[Params.SIGMA1] + second*sinfi/transformedPoint[Params.SIGMA2];
                     retVal[i][Params.X] = transformedPoint[Params.INTENSITY] * pom1 * expVal;
@@ -98,14 +97,14 @@ public class EllipticGaussianPSF extends PSFModel {
                     retVal[i][Params.INTENSITY] = 2*point[Params.INTENSITY] * expVal;
                     if (calibration != null) {
                         // diff(psf, z0)
-                        double pom3 = calibration.dwx2(transformedPoint[PSFModel.Params.Z]) / 2.0 * sqr(first /transformedPoint[Params.SIGMA1])
-                                    + calibration.dwy2(transformedPoint[PSFModel.Params.Z]) / 2.0 * sqr(second/transformedPoint[Params.SIGMA2]);
+                        double pom3 = calibration.dwx2(transformedPoint[PSFModel.Params.Z]) / 2.0 * MathProxy.sqr(first /transformedPoint[Params.SIGMA1])
+                                    + calibration.dwy2(transformedPoint[PSFModel.Params.Z]) / 2.0 * MathProxy.sqr(second/transformedPoint[Params.SIGMA2]);
                         retVal[i][Params.Z] = transformedPoint[Params.INTENSITY] * expVal * pom3;
                     } else {
                         // diff(psf, sigma1)
-                        retVal[i][Params.SIGMA1] = transformedPoint[Params.INTENSITY] * expVal * sqr(first)  / sqr(transformedPoint[Params.SIGMA1]);
+                        retVal[i][Params.SIGMA1] = transformedPoint[Params.INTENSITY] * expVal * MathProxy.sqr(first)  / MathProxy.sqr(transformedPoint[Params.SIGMA1]);
                         // diff(psf, sigma2)
-                        retVal[i][Params.SIGMA2] = transformedPoint[Params.INTENSITY] * expVal * sqr(second) / sqr(transformedPoint[Params.SIGMA2]);
+                        retVal[i][Params.SIGMA2] = transformedPoint[Params.INTENSITY] * expVal * MathProxy.sqr(second) / MathProxy.sqr(transformedPoint[Params.SIGMA2]);
                     }
                     // diff(psf, off)
                     retVal[i][Params.OFFSET] = 2 * point[Params.OFFSET];
@@ -143,8 +142,8 @@ public class EllipticGaussianPSF extends PSFModel {
             guess[Params.SIGMA1] = calibration.getSigma1Squared(guess[Params.Z]);
             guess[Params.SIGMA2] = calibration.getSigma2Squared(guess[Params.Z]);
         } else {
-            guess[Params.SIGMA1] = sqr(defaultSigma);
-            guess[Params.SIGMA2] = sqr(defaultSigma);
+            guess[Params.SIGMA1] = MathProxy.sqr(defaultSigma);
+            guess[Params.SIGMA2] = MathProxy.sqr(defaultSigma);
         }
         guess[Params.OFFSET] = subImage.getMin();
         return guess;
@@ -153,9 +152,9 @@ public class EllipticGaussianPSF extends PSFModel {
     @Override
     public Molecule newInstanceFromParams(double[] params, MoleculeDescriptor.Units subImageUnits, boolean afterFitting) {
         if (afterFitting) {
-            params[Params.SIGMA1] = sqrt(params[Params.SIGMA1]);
-            params[Params.SIGMA2] = sqrt(params[Params.SIGMA2]);
-            params[Params.INTENSITY] = params[Params.INTENSITY] * 2 * PI * params[Params.SIGMA1] * params[Params.SIGMA2];
+            params[Params.SIGMA1] = MathProxy.sqrt(params[Params.SIGMA1]);
+            params[Params.SIGMA2] = MathProxy.sqrt(params[Params.SIGMA2]);
+            params[Params.INTENSITY] = params[Params.INTENSITY] * 2 * MathProxy.PI * params[Params.SIGMA1] * params[Params.SIGMA2];
         }
         Molecule mol = new Molecule(new Params(new int[] { Params.X, Params.Y, Params.Z, Params.SIGMA1, Params.SIGMA2, Params.INTENSITY, Params.OFFSET, Params.BACKGROUND }, params, true));
         MoleculeDescriptor descriptor = mol.descriptor;

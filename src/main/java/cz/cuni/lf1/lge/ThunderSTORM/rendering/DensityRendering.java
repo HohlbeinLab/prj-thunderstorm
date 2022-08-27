@@ -1,7 +1,7 @@
 package cz.cuni.lf1.lge.ThunderSTORM.rendering;
 
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import ij.process.ImageProcessor;
-import static java.lang.Math.ceil;
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.IntegratedSymmetricGaussianPSF.erf;
 import cz.cuni.lf1.lge.ThunderSTORM.rendering.ui.DensityRenderingUI;
 
@@ -59,18 +59,18 @@ public class DensityRendering extends AbstractRendering implements IncrementalRe
             dx = dx / resolution;
             int u = (int) x;
             int v = (int) y;
-            int actualRadius = (this.radius < 0) ? (int) ceil(dx * 3) : this.radius;
-            double sqrt2dx = Math.sqrt(2) * dx;
+            int actualRadius = (this.radius < 0) ? (int) MathProxy.ceil(dx * 3) : this.radius;
+            double sqrt2dx = MathProxy.sqrt(2) * dx;
 
             int w = threeDimensions ? ((int) ((z - zFrom) / zStep)) : 0;
-            int affectedImages = Math.max((int) (3 * dz / zStep), 1);
+            int affectedImages = MathProxy.max((int) (3 * dz / zStep), 1);
             for(int idz = w - affectedImages; idz <= w + affectedImages; idz++) {
                 if(idz >= 0 && idz < zSlices) {
                     double zerfdif;
                     if(threeDimensions) {
                         double aerf = (z - zFrom) - (idz - 1) * zStep;
                         double berf = (z - zFrom) - idz * zStep;
-                        zerfdif = (-erf(berf / (Math.sqrt(2) * dz)) + erf(aerf / (Math.sqrt(2) * dz)));
+                        zerfdif = (-erf(berf / (MathProxy.sqrt(2) * dz)) + erf(aerf / (MathProxy.sqrt(2) * dz)));
                     } else {
                         zerfdif = 2;
                     }

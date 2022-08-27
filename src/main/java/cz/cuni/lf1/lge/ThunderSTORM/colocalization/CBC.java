@@ -121,7 +121,7 @@ public class CBC {
         assert squaredRadiusValues != null;
         assert kdtree != null;
 
-        List<KDTree.DistAndValue<double[]>> neighbors = kdtree.ballQuery(queryPoint, Math.sqrt(squaredRadiusValues[squaredRadiusValues.length - 1]));
+        List<KDTree.DistAndValue<double[]>> neighbors = kdtree.ballQuery(queryPoint, MathProxy.sqrt(squaredRadiusValues[squaredRadiusValues.length - 1]));
 
         double[] result = new double[squaredRadiusValues.length];
         for(KDTree.DistAndValue<double[]> neighbor : neighbors) {
@@ -129,7 +129,7 @@ public class CBC {
                 continue;
             }
             double distance = neighbor.dist;
-            int bin = (int) Math.floor(distance / radiusStep);
+            int bin = (int) MathProxy.floor(distance / radiusStep);
             result[bin]++;
         }
 

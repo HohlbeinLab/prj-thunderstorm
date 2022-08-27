@@ -28,6 +28,8 @@ package cz.cuni.lf1.lge.ThunderSTORM.util.javaml.kdtree;
 // Hyper-Rectangle class supporting KDTree class
 
 
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
+
 class HRect {
 
     protected HPoint min;
@@ -90,8 +92,8 @@ class HRect {
 	HPoint newmax = new HPoint(min.coord.length);
 
 	for (int i=0; i<min.coord.length; ++i) {
-	    newmin.coord[i] = Math.max(min.coord[i], r.min.coord[i]);
-	    newmax.coord[i] = Math.min(max.coord[i], r.max.coord[i]);
+	    newmin.coord[i] = MathProxy.max(min.coord[i], r.min.coord[i]);
+	    newmax.coord[i] = MathProxy.min(max.coord[i], r.max.coord[i]);
 	    if (newmin.coord[i] >= newmax.coord[i]) return null;
 	}
 

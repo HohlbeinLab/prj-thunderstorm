@@ -25,6 +25,8 @@
  */
 package cz.cuni.lf1.lge.ThunderSTORM.util.javaml.kdtree;
 
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
+
 import java.util.Vector;
 
 // K-D Tree node class
@@ -174,13 +176,13 @@ class KDNode<T> {
         }
 
         // 9. max-dist-sqd := minimum of max-dist-sqd and dist-sqd
-        max_dist_sqd = Math.min(max_dist_sqd, dist_sqd);
+        max_dist_sqd = MathProxy.min(max_dist_sqd, dist_sqd);
 
         // 10. A nearer point could only lie in further-kd if there were some
         // part of further-hr within distance sqrt(max-dist-sqd) of
         // target. If this is the case then
         HPoint closest = further_hr.closest(target);
-        if (HPoint.eucdist(closest, target) < Math.sqrt(max_dist_sqd)) {
+        if (HPoint.eucdist(closest, target) < MathProxy.sqrt(max_dist_sqd)) {
 
             // 10.1 if (pivot-target)^2 < dist-sqd then
             if (pivot_to_target < dist_sqd) {

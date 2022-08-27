@@ -1,6 +1,5 @@
 package cz.cuni.lf1.lge.ThunderSTORM.util;
 
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.max;
 import ij.process.FloatProcessor;
 import java.util.Arrays;
 
@@ -30,7 +29,7 @@ public class Morphology {
     public static FloatProcessor dilate(FloatProcessor image, FloatProcessor kernel) {
         float val;
         int xc = kernel.getWidth() / 2, yc = kernel.getHeight()/ 2;
-        FloatProcessor img = Padding.PADDING_ZERO.addBorder(image, max(xc, yc));
+        FloatProcessor img = Padding.PADDING_ZERO.addBorder(image, MathProxy.max(xc, yc));
         FloatProcessor out = (FloatProcessor) image.createProcessor(image.getWidth(), image.getHeight());
         for(int x = xc, xm = xc+image.getWidth(); x < xm; x++) {
             for(int y = yc, ym = yc+image.getHeight(); y < ym; y++) {

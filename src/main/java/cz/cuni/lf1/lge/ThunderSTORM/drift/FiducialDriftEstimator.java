@@ -179,7 +179,7 @@ public class FiducialDriftEstimator {
                         cost += MathProxy.sqr(detection.val - point[detection.index] - mean);
                     }
                 }
-                return Math.sqrt(cost);
+                return MathProxy.sqrt(cost);
             }
         };
         //values for first iteration:  first detection coords

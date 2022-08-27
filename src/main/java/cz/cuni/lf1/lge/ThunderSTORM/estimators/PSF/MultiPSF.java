@@ -2,17 +2,16 @@ package cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF;
 
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.Units;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.SubImage;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.Range;
 import java.util.Arrays;
 import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
 import org.apache.commons.math3.analysis.MultivariateVectorFunction;
-import static org.apache.commons.math3.util.FastMath.abs;
 
 /**
  * Representation of multi-molecule model.
  */
 public class MultiPSF extends PSFModel {
-
     private int nmol;
     private double defaultSigma;
     private final PSFModel psf;
@@ -189,12 +188,12 @@ public class MultiPSF extends PSFModel {
             for(int i = 0, base = 0; i < nmol; i++, base += Params.PARAMS_LENGTH) {
                 x = guess[base+Params.X];
                 y = guess[base+Params.Y];
-                if((subImage.size_x/2 - abs(x)) < defaultSigma) {
+                if((subImage.size_x/2 - MathProxy.abs(x)) < defaultSigma) {
                     guess[base+Params.X] += (x > 0 ? sig_2 : -sig_2);
                 } else {
                     guess[base+Params.X] -= (x > 0 ? sig_2 : -sig_2);
                 }
-                if((subImage.size_y/2 - abs(y)) < defaultSigma) {
+                if((subImage.size_y/2 - MathProxy.abs(y)) < defaultSigma) {
                     guess[base+Params.Y] += (y > 0 ? sig_2 : -sig_2);
                 } else {
                     guess[base+Params.Y] -= (y > 0 ? sig_2 : -sig_2);

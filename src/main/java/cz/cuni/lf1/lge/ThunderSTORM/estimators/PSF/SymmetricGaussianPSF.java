@@ -4,11 +4,8 @@ import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.Units;
 import java.util.Arrays;
 
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.SubImage;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
-import static org.apache.commons.math3.util.FastMath.PI;
-import static org.apache.commons.math3.util.FastMath.abs;
-import static org.apache.commons.math3.util.FastMath.exp;
-import static org.apache.commons.math3.util.FastMath.sqrt;
 
 /**
  * Representation of 2D symmetric Gaussian PSFModel model.
@@ -27,8 +24,8 @@ public class SymmetricGaussianPSF extends PSFModel {
     @Override
     public double getValue(double[] params, double x, double y) {
         double twoSigmaSquared = params[Params.SIGMA] * params[Params.SIGMA] * 2;
-        return params[Params.OFFSET] + params[Params.INTENSITY] / (twoSigmaSquared * PI)
-                * exp(-((x - params[Params.X]) * (x - params[Params.X]) + (y - params[Params.Y]) * (y - params[Params.Y])) / twoSigmaSquared);
+        return params[Params.OFFSET] + params[Params.INTENSITY] / (twoSigmaSquared * MathProxy.PI)
+                * MathProxy.exp(-((x - params[Params.X]) * (x - params[Params.X]) + (y - params[Params.Y]) * (y - params[Params.Y])) / twoSigmaSquared);
     }
 
     @Override
@@ -47,9 +44,9 @@ public class SymmetricGaussianPSF extends PSFModel {
         double [] transformed = Arrays.copyOf(parameters, parameters.length);
         transformed[Params.X] = parameters[Params.X];
         transformed[Params.Y] = parameters[Params.Y];
-        transformed[Params.INTENSITY] = sqrt(abs(parameters[Params.INTENSITY]));
-        transformed[Params.SIGMA] = sqrt(abs(parameters[Params.SIGMA]));
-        transformed[Params.OFFSET] = sqrt(abs(parameters[Params.OFFSET]));
+        transformed[Params.INTENSITY] = MathProxy.sqrt(MathProxy.abs(parameters[Params.INTENSITY]));
+        transformed[Params.SIGMA] = MathProxy.sqrt(MathProxy.abs(parameters[Params.SIGMA]));
+        transformed[Params.OFFSET] = MathProxy.sqrt(MathProxy.abs(parameters[Params.OFFSET]));
         return transformed;
     }
 
@@ -70,8 +67,8 @@ public class SymmetricGaussianPSF extends PSFModel {
                     double xd = (xgrid[i] - transformedPoint[Params.X]);
                     double yd = (ygrid[i] - transformedPoint[Params.Y]);
                     double upper = -(xd * xd + yd * yd) / (2 * sigmaSquared);
-                    double expVal = exp(upper);
-                    double expValDivPISigmaSquared = expVal / (sigmaSquared * PI);
+                    double expVal = MathProxy.exp(upper);
+                    double expValDivPISigmaSquared = expVal / (sigmaSquared * MathProxy.PI);
                     double expValDivPISigmaPowEight = expValDivPISigmaSquared / sigmaSquared;
                     retVal[i][Params.INTENSITY] = point[Params.INTENSITY] * expValDivPISigmaSquared;
                     //d()/dx
@@ -108,7 +105,7 @@ public class SymmetricGaussianPSF extends PSFModel {
         Arrays.fill(guess, 0);
         guess[Params.X] = subImage.detectorX;
         guess[Params.Y] = subImage.detectorY;
-        guess[Params.INTENSITY] = (subImage.getMax() - subImage.getMin()) * 2 * PI * defaultSigma * defaultSigma;
+        guess[Params.INTENSITY] = (subImage.getMax() - subImage.getMin()) * 2 * MathProxy.PI * defaultSigma * defaultSigma;
         guess[Params.SIGMA] = defaultSigma;
         guess[Params.OFFSET] = subImage.getMin();
         return guess;

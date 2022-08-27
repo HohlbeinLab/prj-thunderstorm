@@ -2,6 +2,7 @@ package cz.cuni.lf1.lge.ThunderSTORM.estimators;
 
 import cz.cuni.lf1.lge.ThunderSTORM.UI.StoppedByUserException;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.Point;
 import ij.process.FloatProcessor;
 
@@ -80,7 +81,7 @@ public class FullImageFitting implements IEstimator {
     }
     
     private boolean checkIsInSubimage(double x, double y, double w, double h) {
-        return Math.abs(x) <= w && Math.abs(y) <= h;
+        return MathProxy.abs(x) <= w && MathProxy.abs(y) <= h;
     }
     
     private double [] getImageData(FloatProcessor img) {

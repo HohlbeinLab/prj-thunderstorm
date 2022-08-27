@@ -9,6 +9,7 @@ import cz.cuni.lf1.lge.ThunderSTORM.util.GridBagHelper;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.ParameterKey;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.DoubleValidatorFactory;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.IntegerValidatorFactory;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.WorkerThread;
 import ij.IJ;
 
@@ -19,8 +20,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
-
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqr;
 
 public class ResultsGrouping extends PostProcessingModule {
 
@@ -157,7 +156,7 @@ public class ResultsGrouping extends PostProcessingModule {
         for(int i = 0, im = model.getRowCount(); i < im; i++) {
             frames.InsertMolecule(model.getRow(i));
         }
-        frames.mergeMolecules(sqr(dist), offFrames, new FrameSequence.LastDetection(), framesPerMol, zWeight, null);
+        frames.mergeMolecules(MathProxy.sqr(dist), offFrames, new FrameSequence.LastDetection(), framesPerMol, zWeight, null);
         //
         // Set new IDs for the new "macro" molecules
         for(Molecule mol : frames.getAllMolecules()) {

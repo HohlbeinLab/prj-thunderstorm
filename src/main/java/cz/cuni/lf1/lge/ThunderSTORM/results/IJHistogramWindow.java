@@ -5,6 +5,8 @@ import java.awt.image.*;
 import java.awt.event.*;
 import java.io.*;
 import java.awt.datatransfer.*;
+
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import ij.*;
 import ij.gui.ImageCanvas;
 import ij.gui.ImageWindow;
@@ -14,15 +16,12 @@ import ij.process.*;
 import ij.measure.*;
 import ij.plugin.filter.Analyzer;
 import ij.text.TextWindow;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.min;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.max;
 
 /**
  * This class is an extended ImageWindow that displays histograms.
  */
 public final class IJHistogramWindow extends ImageWindow implements Measurements, ActionListener, ClipboardOwner,
         MouseListener, MouseMotionListener, ImageListener, KeyListener, Runnable {
-
     static final int WIN_WIDTH = 300;
     static final int WIN_HEIGHT = 240;
     static final int HIST_WIDTH = 256;
@@ -379,12 +378,12 @@ public final class IJHistogramWindow extends ImageWindow implements Measurements
     void drawLogPlot(long maxCount, ImageProcessor ip) {
         frame = new Rectangle(XMARGIN, YMARGIN, HIST_WIDTH, HIST_HEIGHT);
         ip.drawRect(frame.x - 1, frame.y, frame.width + 2, frame.height + 1);
-        double max = Math.log(maxCount);
+        double max = MathProxy.log(maxCount);
         ip.setColor(Color.gray);
         int index, y;
         for(int i = 0; i < HIST_WIDTH; i++) {
             index = (int) (i * (double) histogram.length / HIST_WIDTH);
-            y = histogram[index] == 0 ? 0 : (int) (HIST_HEIGHT * Math.log(histogram[index]) / max);
+            y = histogram[index] == 0 ? 0 : (int) (HIST_HEIGHT * MathProxy.log(histogram[index]) / max);
             if(y > HIST_HEIGHT) {
                 y = HIST_HEIGHT;
             }
@@ -406,7 +405,7 @@ public final class IJHistogramWindow extends ImageWindow implements Measurements
         ip.drawString(d2s(hmax), x + HIST_WIDTH - getWidth(hmax, ip) + 10, y);
 
         double binWidth = range / stats.nBins;
-        binWidth = Math.abs(binWidth);
+        binWidth = MathProxy.abs(binWidth);
         boolean showBins = binWidth != 1.0 || !fixedRange;
         int col1 = XMARGIN + 5;
         int col2 = XMARGIN + HIST_WIDTH / 2;
@@ -629,7 +628,7 @@ public final class IJHistogramWindow extends ImageWindow implements Measurements
                 return;
             }
             bgThread = new Thread(this, "Live Histogram");
-            bgThread.setPriority(Math.max(bgThread.getPriority() - 3, Thread.MIN_PRIORITY));
+            bgThread.setPriority(MathProxy.max(bgThread.getPriority() - 3, Thread.MIN_PRIORITY));
             bgThread.start();
             imageUpdated(srcImp);
         }
@@ -735,7 +734,7 @@ public final class IJHistogramWindow extends ImageWindow implements Measurements
                 }
                 if(srcImp != null) {
                     if(srcImp.getBitDepth() == 16 && ImagePlus.getDefault16bitRange() != 0) {
-                        showHistogram(srcImp, 256, 0, Math.pow(2, ImagePlus.getDefault16bitRange()) - 1);
+                        showHistogram(srcImp, 256, 0, MathProxy.pow(2, ImagePlus.getDefault16bitRange()) - 1);
                     } else {
                         showHistogram(srcImp, 256);
                     }
@@ -791,8 +790,8 @@ public final class IJHistogramWindow extends ImageWindow implements Measurements
 
     private void applyRoiAsFilter() {
         Rectangle roi = this.imp.getProcessor().getRoi();
-        int left = max(frame.x, roi.x) - frame.x;
-        int right = min((frame.x + frame.width - 1), (roi.x + roi.width - 1)) - frame.x;
+        int left = MathProxy.max(frame.x, roi.x) - frame.x;
+        int right = MathProxy.min((frame.x + frame.width - 1), (roi.x + roi.width - 1)) - frame.x;
         
         int indexLeft  = (int) (left  * ((double) histogram.length) / HIST_WIDTH);
         int indexRight = (int) (right * ((double) histogram.length) / HIST_WIDTH);

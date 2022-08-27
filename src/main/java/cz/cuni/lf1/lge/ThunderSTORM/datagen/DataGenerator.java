@@ -9,12 +9,10 @@ import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.ui.IPsfUI;
 import cz.cuni.lf1.lge.ThunderSTORM.filters.BoxFilter;
 import cz.cuni.lf1.lge.ThunderSTORM.filters.IFilter;
 import cz.cuni.lf1.lge.ThunderSTORM.util.ImageMath;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.ceil;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.Range;
 import ij.process.FloatProcessor;
 import org.apache.commons.math3.random.RandomDataGenerator;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqr;
-import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqrt;
 import ij.process.ShortProcessor;
 import java.util.Vector;
 
@@ -52,7 +50,7 @@ public class DataGenerator {
     }
     
     public FloatProcessor generateGaussianNoise(int width, int height, double mean, double variance) {
-        double sigma = sqrt(variance);
+        double sigma = MathProxy.sqrt(variance);
         FloatProcessor img = new FloatProcessor(width, height);
         for(int x = 0; x < width; x++)
             for(int y = 0; y < height; y++)
@@ -62,11 +60,11 @@ public class DataGenerator {
     
     public FloatProcessor generateBackground(int width, int height, Drift drift, Range bkg) {
         // padd the background image; crop the center of the image later, after the drift is applied
-        FloatProcessor img = new FloatProcessor(width + 2*(int)ceil(drift.dist), height + 2*(int)ceil(drift.dist));
+        FloatProcessor img = new FloatProcessor(width + 2*(int)MathProxy.ceil(drift.dist), height + 2*(int)MathProxy.ceil(drift.dist));
         for(int x = 0, w = img.getWidth(); x < w; x++)
             for(int y = 0, h = img.getHeight(); y < h; y++)
                 img.setf(x, y, (float)getNextUniform(bkg.from, bkg.to));
-        IFilter filter = new BoxFilter(1+2*(int)(((double)Math.min(width, width))/8.0));
+        IFilter filter = new BoxFilter(1+2*(int)(((double)MathProxy.min(width, width))/8.0));
         return filter.filterImage(img);
     }
 
@@ -74,7 +72,7 @@ public class DataGenerator {
         MoleculeDescriptor descriptor = null;
         double[] params = new double[PSFModel.Params.PARAMS_LENGTH];
         Vector<EmitterModel> molist = new Vector<EmitterModel>();
-        double gPpx = Units.NANOMETER_SQUARED.convertTo(Units.MICROMETER_SQUARED, sqr(CameraSetupPlugIn.getPixelSize())*width*height/(mask.getWidth()*mask.getHeight())) * density, p_px, p, fwhm0;
+        double gPpx = Units.NANOMETER_SQUARED.convertTo(Units.MICROMETER_SQUARED, MathProxy.sqr(CameraSetupPlugIn.getPixelSize())*width*height/(mask.getWidth()*mask.getHeight())) * density, p_px, p, fwhm0;
         double zFrom = psf.getZRange().from, zTo = psf.getZRange().to;
         for(int x = 0; x < mask.getWidth(); x++) {
             for(int y = 0; y < mask.getHeight(); y++) {

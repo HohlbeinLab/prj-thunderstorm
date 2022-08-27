@@ -5,6 +5,7 @@ import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.ui.AstigmaticBiplaneCalibrationEstimatorUI;
 import cz.cuni.lf1.lge.ThunderSTORM.filters.ui.IFilterUI;
 import cz.cuni.lf1.lge.ThunderSTORM.util.IBinaryTransform;
+import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.VectorMath;
 import ij.IJ;
 import ij.ImagePlus;
@@ -165,8 +166,8 @@ public class AstigmaticBiplaneCalibrationProcess extends AbstractCalibrationProc
 
         double[] ratios = new double[sigma1AsArray.length];
         for(int i = 0; i < intensity1AsArray.length; i++) {
-            double ratio1 = (Math.max(sigma1AsArray[i], sigma2AsArray[i]) / Math.min(sigma1AsArray[i], sigma2AsArray[i])) / intensity1AsArray[i];
-            double ratio2 = (Math.max(sigma3AsArray[i], sigma4AsArray[i]) / Math.min(sigma3AsArray[i], sigma4AsArray[i])) / intensity2AsArray[i];
+            double ratio1 = (MathProxy.max(sigma1AsArray[i], sigma2AsArray[i]) / MathProxy.min(sigma1AsArray[i], sigma2AsArray[i])) / intensity1AsArray[i];
+            double ratio2 = (MathProxy.max(sigma3AsArray[i], sigma4AsArray[i]) / MathProxy.min(sigma3AsArray[i], sigma4AsArray[i])) / intensity2AsArray[i];
             ratios[i] = (ratio1 + ratio2) / 2.0;
         }
 
