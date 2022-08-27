@@ -7,7 +7,6 @@ import cz.cuni.lf1.lge.ThunderSTORM.util.VectorMath;
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
 import org.apache.commons.math3.analysis.MultivariateVectorFunction;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Arrays;
 
@@ -38,12 +37,12 @@ public class BiplaneEllipticGaussianPSF extends PSFModel {
 
     @Override
     public double getValue(double[] params, double x, double y) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double[] getInitialParams(SubImage subImage) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override

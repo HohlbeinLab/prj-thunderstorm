@@ -2,7 +2,6 @@ package cz.cuni.lf1.lge.ThunderSTORM.calibration;
 
 import ij.IJ;
 import org.yaml.snakeyaml.Yaml;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -45,36 +44,36 @@ public class DoubleDefocusCalibration<T extends DefocusCalibration> extends Defo
 
     @Override
     public double evalDefocus(double z, double w0, double a, double b, double c, double d) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double evalDefocus2(double z, double w0, double a, double b, double c, double d) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double dwx(double z) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double dwy(double z) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double dwx2(double z) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double dwy2(double z) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public DaostormCalibration getDaoCalibration() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }
