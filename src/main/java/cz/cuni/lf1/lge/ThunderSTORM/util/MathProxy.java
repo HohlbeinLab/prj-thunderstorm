@@ -1,6 +1,5 @@
 package cz.cuni.lf1.lge.ThunderSTORM.util;
 
-import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import net.jafama.FastMath;
 
 /**
@@ -20,8 +19,6 @@ public class MathProxy {
      * PI constant ({@mathjax \pi}).
      */
     public static final double PI = FastMath.PI;
-
-    public static final EuclideanDistance euclideanDistance = new EuclideanDistance();
 
     /**
      * Raise a double to an int power.
@@ -166,11 +163,15 @@ public class MathProxy {
         return FastMath.sqrt(x);
     }
 
-    public static Double abs(double val) {
+    public static double abs(double val) {
         return FastMath.abs(val);
     }
 
-    public static double toRadians(Double get) {
+    public static float abs(float val) {
+        return FastMath.abs(val);
+    }
+
+    public static double toRadians(double get) {
         return FastMath.toRadians(PI);
     }
 
@@ -210,10 +211,10 @@ public class MathProxy {
      * Evaluates the 1D Gaussian function at a given point {@code x} and with a
      * given width {@code sigma}.
      *
-     * @param x a point where the function will get evaluated
-     * @param sigma {@mathjax \sigma} is a width of the Gaussian function
+     * @param x          a point where the function will get evaluated
+     * @param sigma      {@mathjax \sigma} is a width of the Gaussian function
      * @param normalized decides wheter the Gaussian should be normalized to
-     * have its integral equal to 1
+     *                   have its integral equal to 1
      * @return if {@code normalized} is {@code true} then the function returns
      * {@mathjax \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{x^2}{2 \sigma^2}}}, else
      * the function returns {@mathjax e^{-\frac{x^2}{2 \sigma^2}}}.
@@ -223,7 +224,24 @@ public class MathProxy {
     }
 
     public static double euclidDist2(double[] a, double[] b) {
-        return euclideanDistance.compute(a, b);
+        double dist2 = 0.0;
+        int i = 0, im = min(a.length, b.length);
+
+        for (; i < im; i++) {
+            dist2 += sqr(a[i] - b[i]);
+        }
+
+        if (a.length > b.length) {
+            for ( ; i < a.length; i++) {
+                dist2 += sqr(a[i]);
+            }
+        } else if (b.length > a.length) {
+            for ( ; i < b.length; i++) {
+                dist2 += sqr(b[i]);
+            }
+        }
+
+        return dist2;
     }
 
     public static double euclidDist(double[] a, double[] b) {

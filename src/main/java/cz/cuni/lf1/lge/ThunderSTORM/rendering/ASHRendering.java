@@ -76,7 +76,7 @@ public class ASHRendering extends AbstractRendering implements IncrementalRender
                     for (int i = -shifts + 1; i < shifts; i++) {
                         for (int j = -shifts + 1; j < shifts; j++) {
                             if (u + i < imSizeX && u + i >= 0 && v + j < imSizeY && v + j >= 0) {
-                                img.setf(u + i, v + j, (float) (img.getf(u + i, v + j) + (shifts - MathProxy.abs(i)) * (shifts - MathProxy.abs(j)) * (zShifts - MathProxy.abs(k))));
+                                img.setf(u + i, v + j, img.getf(u + i, v + j) + (shifts - MathProxy.abs(i)) * (shifts - MathProxy.abs(j)) * (zShifts - MathProxy.abs(k)));
                             }
                         }
                     }

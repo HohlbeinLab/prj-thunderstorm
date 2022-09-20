@@ -26,8 +26,6 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
-
 public class PerformanceEvaluationPlugIn implements PlugIn {
 
     private int processingFrame;
@@ -97,7 +95,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
                 return;
             }
 
-            runEvaluation(dialog.getFrameByFrame(), dialog.getEvaluationSpace().equals("xyz"), MathProxy.sqr(dialog.getToleranceRadius()), distUnits);
+            runEvaluation(dialog.getFrameByFrame(), dialog.getEvaluationSpace().equals("xyz"), Math.pow(dialog.getToleranceRadius(), 2), distUnits);
         } catch (Exception ex) {
             IJ.handleException(ex);
         }
@@ -182,12 +180,12 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
         //
         IJ.showStatus("Gathering results...");
         //
-        Vector<Pair<Molecule,Molecule>> TP = new Vector<Pair<Molecule,Molecule>>();
+        Vector<Pair<Molecule,Molecule>> TP = new Vector<>();
         double tp = 0.0, fp = 0.0, fn = 0.0;
         for(MoleculeMatcherWorker matcher : matchers) {
-            tp += (double) matcher.TP.size();
-            fp += (double) matcher.FP.size();
-            fn += (double) matcher.FN.size();
+            tp += matcher.TP.size();
+            fp += matcher.FP.size();
+            fn += matcher.FN.size();
             TP.addAll(matcher.TP);
         }
         double jaccard = tp / (tp + fp + fn);
@@ -202,7 +200,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
         //
         ResultsTable rt = ResultsTable.getResultsTable();
         rt.incrementCounter();
-        rt.addValue("Distance radius [" + distUnits.getLabel()+ "]", MathProxy.sqrt(dist2Tol));
+        rt.addValue("Distance radius [" + distUnits.getLabel()+ "]", Math.sqrt(dist2Tol));
         rt.addValue("# of TP", tp);
         rt.addValue("# of FP", fp);
         rt.addValue("# of FN", fn);
@@ -227,7 +225,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSExyz(List<Pair<Molecule, Molecule>> pairs, Units units) {
         double err_sum = 0.0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += MathProxy.sqrt(pair.first.dist2xyz(pair.second, units));
+            err_sum += Math.sqrt(pair.first.dist2xyz(pair.second, units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -235,7 +233,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSExy(List<Pair<Molecule, Molecule>> pairs, Units units) {
         double err_sum = 0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += MathProxy.sqrt(pair.first.dist2xy(pair.second, units));
+            err_sum += Math.sqrt(pair.first.dist2xy(pair.second, units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -243,7 +241,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSEz(List<Pair<Molecule, Molecule>> pairs, Units units) {
         double err_sum = 0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += MathProxy.sqrt(pair.first.dist2z(pair.second, units));
+            err_sum += Math.sqrt(pair.first.dist2z(pair.second, units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -251,7 +249,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSEx(List<Pair<Molecule, Molecule>> pairs, Units units){
         double err_sum = 0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += MathProxy.abs(pair.first.getX(units) - pair.second.getX(units));
+            err_sum += Math.abs(pair.first.getX(units) - pair.second.getX(units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -259,7 +257,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     private double calcRMSEy(List<Pair<Molecule, Molecule>> pairs, Units units){
         double err_sum = 0;
         for(Pair<Molecule,Molecule> pair : pairs) {
-            err_sum += MathProxy.abs(pair.first.getY(units) - pair.second.getY(units));
+            err_sum += Math.abs(pair.first.getY(units) - pair.second.getY(units));
         }
         return (err_sum / (double)pairs.size());
     }
@@ -271,7 +269,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
     }
 
     private int getFrameCount() {
-        return (int) MathProxy.max(VectorMath.max(IJResultsTable.getResultsTable().getColumnAsDoubles(MoleculeDescriptor.LABEL_FRAME)),
+        return (int) Math.max(VectorMath.max(IJResultsTable.getResultsTable().getColumnAsDoubles(MoleculeDescriptor.LABEL_FRAME)),
             VectorMath.max(IJGroundTruthTable.getGroundTruthTable().getColumnAsDoubles(MoleculeDescriptor.LABEL_FRAME)));
     }
     
@@ -288,14 +286,14 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
         public Vector<Molecule> FP, FN;
 
         public MoleculeMatcherWorker(int frameStart, int frameStop, boolean threeD, double dist2Thr, Units distUnits) {
-            this.frames = new TreeSet<Integer>();
+            this.frames = new TreeSet<>();
             this.detections = fillWithData(frameStart, frameStop, IJResultsTable.getResultsTable());
             this.groundTruth = fillWithData(frameStart, frameStop, IJGroundTruthTable.getGroundTruthTable());
             this.matcher = new MoleculeMatcher(threeD, dist2Thr, distUnits);
             //
-            this.TP = new Vector<Pair<Molecule, Molecule>>();
-            this.FP = new Vector<Molecule>();
-            this.FN = new Vector<Molecule>();
+            this.TP = new Vector<>();
+            this.FP = new Vector<>();
+            this.FN = new Vector<>();
         }
         
         @Override
@@ -310,7 +308,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
         }
         
         private Map<Integer, List<Molecule>> fillWithData(int frameStart, int frameStop, GenericTable table) {
-            Map<Integer, List<Molecule>> framesMolList = new HashMap<Integer, List<Molecule>>();
+            Map<Integer, List<Molecule>> framesMolList = new HashMap<>();
             for(int i = 0, im = table.getRowCount(); i < im; i++) {
                 Molecule mol = table.getRow(i);
                 int frame = -1;
@@ -319,7 +317,7 @@ public class PerformanceEvaluationPlugIn implements PlugIn {
                 }
                 if((frame < frameStart) || (frame > frameStop)) continue;
                 if(!framesMolList.containsKey(frame)) {
-                    framesMolList.put(frame, new Vector<Molecule>());
+                    framesMolList.put(frame, new Vector<>());
                     frames.add(frame);
                 }
                 framesMolList.get(frame).add(mol);
