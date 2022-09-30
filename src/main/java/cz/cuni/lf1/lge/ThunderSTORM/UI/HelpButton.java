@@ -96,8 +96,8 @@ public class HelpButton extends JButton {
      */
     public static JEditorPane createEditorUsingOurClassLoader() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         ClassLoader our = JarFirstClassLoader.getInstance();
-        Class c = Class.forName("org.fit.cssbox.swingbox.BrowserPane", true, our);
-        JEditorPane editor = (JEditorPane) c.newInstance();
+        JEditorPane editor = new JEditorPane();
+        editor.setEditable(false);
 
         Class c2 = Class.forName("org.fit.cssbox.swingbox.SwingBoxEditorKit", true, our);
         editor.setEditorKit((EditorKit) c2.newInstance());
