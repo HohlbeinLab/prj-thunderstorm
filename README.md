@@ -1,7 +1,7 @@
 # ThunderSTORM Optimized by Quantori
 
 ## Links
-* [Issue Created on the Suggested Improvement Opportunities](https://github.com/zitmen/thunderstorm/issues)
+* [Issue Created on the Suggested Improvement Opportunities](https://github.com/zitmen/thunderstorm/issues/73)
 
 ## Description
 ThunderSTORM is a popular open-source software tool that provides a set of tools for image processing, analysis, and visualization in single-molecule localization microscopy. To improve its functionality, we updated and optimized ThunderSTORM by focusing on enhancing its mathematical functions. Our goal was to increase its processing speed while maintaining a high degree of precision. The updates involved improving a general math module and optimizing particular fitting methods used in the software. These modifications significantly accelerated the performance of ThunderSTORM, and demonstrated that even minor modifications can significantly enhance the speed of the legacy software without sacrificing its accuracy.
