@@ -144,12 +144,9 @@ public final class AnalysisPlugIn implements ExtendedPlugInFilter {
             } else {
                 // Create and show the dialog
                 try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            dialog = new AnalysisOptionsDialog(imp, command, allFilters, allDetectors, allEstimators, allRenderers);
-                            dialog.setVisible(true);
-                        }
+                    SwingUtilities.invokeAndWait(() -> {
+                        dialog = new AnalysisOptionsDialog(imp, command, allFilters, allDetectors, allEstimators, allRenderers);
+                        dialog.setVisible(true);
                     });
                 } catch(InvocationTargetException e) {
                     throw e.getCause();

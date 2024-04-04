@@ -108,10 +108,10 @@ public class AnalysisOptionsDialog extends JDialog implements ActionListener {
         this.activeEstimatorIndex = Integer.parseInt(Prefs.get("thunderstorm.estimators.index", "0"));
         this.activeRendererIndex = Integer.parseInt(Prefs.get("thunderstorm.rendering.index", "0"));
         //
-        this.filtersPanel = new CardsPanel<IFilterUI>(filters, activeFilterIndex);
-        this.detectorsPanel = new CardsPanel<IDetectorUI>(detectors, activeDetectorIndex);
-        this.estimatorsPanel = new CardsPanel<IEstimatorUI>(estimators, activeEstimatorIndex);
-        this.renderersPanel = new CardsPanel<IRendererUI>(renderers, activeRendererIndex);
+        this.filtersPanel = new CardsPanel<>(filters, activeFilterIndex);
+        this.detectorsPanel = new CardsPanel<>(detectors, activeDetectorIndex);
+        this.estimatorsPanel = new CardsPanel<>(estimators, activeEstimatorIndex);
+        this.renderersPanel = new CardsPanel<>(renderers, activeRendererIndex);
         //
         this.defaults = new JButton("Defaults");
         this.preview = new JButton("Preview");
@@ -211,7 +211,7 @@ public class AnalysisOptionsDialog extends JDialog implements ActionListener {
 
                 saveSelectedModuleIndexesToPrefs(activeFilterIndex, activeDetectorIndex, activeEstimatorIndex, activeRendererIndex);
             } catch(Exception ex) {
-                IJ.error("Error parsing parameters: " + ex.toString());
+                IJ.error("Error parsing parameters: " + ex);
                 return;
             }
             //
@@ -234,7 +234,7 @@ public class AnalysisOptionsDialog extends JDialog implements ActionListener {
 
                 saveSelectedModuleIndexesToPrefs(activeFilterIndex, activeDetectorIndex, activeEstimatorIndex, activeRendererIndex);
             } catch(Exception ex) {
-                IJ.error("Error parsing parameters: " + ex.toString());
+                IJ.error("Error parsing parameters: " + ex);
                 return;
             }
             //
@@ -243,57 +243,54 @@ public class AnalysisOptionsDialog extends JDialog implements ActionListener {
                 Thresholder.setActiveFilter(activeFilterIndex);   // !! must be called before any threshold is evaluated !!
                 Thresholder.parseThreshold(allDetectors.get(activeDetectorIndex).getThreadLocalImplementation().getThresholdFormula());
             } catch(Exception ex) {
-                IJ.error("Error parsing threshold formula! " + ex.toString());
+                IJ.error("Error parsing threshold formula! " + ex);
             }
             //
             if(previewFuture != null) {
                 previewFuture.cancel(true);
             }
             final Roi roi = imp.getRoi();
-            previewFuture = previewThreadRunner.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        IJ.showStatus("Creating preview image.");
-                        ImageProcessor processor = imp.getProcessor();
-                        if(roi != null) {
-                            processor.setRoi(roi.getBounds());
-                            processor = processor.crop();
-                        } else {
-                            processor = processor.duplicate();
-                        }
-                        FloatProcessor fp = subtract((FloatProcessor) processor.crop().convertToFloat(), (float) CameraSetupPlugIn.getOffset());
-                        if(roi != null) {
-                            fp.setMask(roi.getMask());
-                        }
-                        
-                        Thresholder.setCurrentImage(fp);
-                        FloatProcessor filtered = allFilters.get(activeFilterIndex).getThreadLocalImplementation().filterImage(fp);
-                        new ImagePlus("Filtered frame " + Integer.toString(imp.getSlice()), filtered).show();
-                        GUI.checkIJEscapePressed();
-                        IDetector detector = allDetectors.get(activeDetectorIndex).getThreadLocalImplementation();
-                        List<Point> detections = Point.applyRoiMask(imp.getRoi(), detector.detectMoleculeCandidates(filtered));
-                        ij.measure.ResultsTable tbl = ij.measure.ResultsTable.getResultsTable();
-                        tbl.reset();
-                        tbl.incrementCounter();
-                        tbl.addValue("Threshold value for frame " + Integer.toString(imp.getSlice()), detector.getThresholdValue());
-                        tbl.show("Results");
-                        GUI.checkIJEscapePressed();
-                        List<Molecule> results = allEstimators.get(activeEstimatorIndex).getThreadLocalImplementation().estimateParameters(fp, detections);
-                        GUI.checkIJEscapePressed();
-                        //
-                        ImagePlus impPreview = new ImagePlus("Detections in frame " + Integer.toString(imp.getSlice()), processor);
-                        RenderingOverlay.showPointsInImage(impPreview,
-                                Molecule.extractParamToArray(results, PSFModel.Params.LABEL_X),
-                                Molecule.extractParamToArray(results, PSFModel.Params.LABEL_Y),
-                                Color.red, RenderingOverlay.MARKER_CROSS);
-                        impPreview.show();
-                    } catch(StoppedByUserException ex) {
-                        IJ.resetEscape();
-                        IJ.showStatus("Preview interrupted.");
-                    } catch(Exception ex) {
-                        IJ.handleException(ex);
+            previewFuture = previewThreadRunner.submit(() -> {
+                try {
+                    IJ.showStatus("Creating preview image.");
+                    ImageProcessor processor = imp.getProcessor();
+                    if(roi != null) {
+                        processor.setRoi(roi.getBounds());
+                        processor = processor.crop();
+                    } else {
+                        processor = processor.duplicate();
                     }
+                    FloatProcessor fp = subtract((FloatProcessor) processor.crop().convertToFloat(), (float) CameraSetupPlugIn.getOffset());
+                    if(roi != null) {
+                        fp.setMask(roi.getMask());
+                    }
+
+                    Thresholder.setCurrentImage(fp);
+                    FloatProcessor filtered = allFilters.get(activeFilterIndex).getThreadLocalImplementation().filterImage(fp);
+                    new ImagePlus("Filtered frame " + imp.getSlice(), filtered).show();
+                    GUI.checkIJEscapePressed();
+                    IDetector detector = allDetectors.get(activeDetectorIndex).getThreadLocalImplementation();
+                    List<Point> detections = Point.applyRoiMask(imp.getRoi(), detector.detectMoleculeCandidates(filtered));
+                    ij.measure.ResultsTable tbl = ij.measure.ResultsTable.getResultsTable();
+                    tbl.reset();
+                    tbl.incrementCounter();
+                    tbl.addValue("Threshold value for frame " + imp.getSlice(), detector.getThresholdValue());
+                    tbl.show("Results");
+                    GUI.checkIJEscapePressed();
+                    List<Molecule> results = allEstimators.get(activeEstimatorIndex).getThreadLocalImplementation().estimateParameters(fp, detections);
+                    GUI.checkIJEscapePressed();
+                    //
+                    ImagePlus impPreview = new ImagePlus("Detections in frame " + imp.getSlice(), processor);
+                    RenderingOverlay.showPointsInImage(impPreview,
+                            Molecule.extractParamToArray(results, PSFModel.Params.LABEL_X),
+                            Molecule.extractParamToArray(results, PSFModel.Params.LABEL_Y),
+                            Color.red, RenderingOverlay.MARKER_CROSS);
+                    impPreview.show();
+                } catch(StoppedByUserException ex) {
+                    IJ.resetEscape();
+                    IJ.showStatus("Preview interrupted.");
+                } catch(Exception ex) {
+                    IJ.handleException(ex);
                 }
             });
 
