@@ -5,6 +5,7 @@ import cz.cuni.lf1.lge.ThunderSTORM.detectors.ui.IDetectorUI;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.Molecule;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.ui.ICalibrationEstimatorUI;
+import cz.cuni.lf1.lge.ThunderSTORM.estimators.ui.PhasorAstigmatismCalibrationEstimatorUI;
 import cz.cuni.lf1.lge.ThunderSTORM.filters.ui.IFilterUI;
 import cz.cuni.lf1.lge.ThunderSTORM.results.IJResultsTable;
 import cz.cuni.lf1.lge.ThunderSTORM.thresholding.Thresholder;
@@ -30,7 +31,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor.LABEL_FRAME;
 import static cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel.Params.*;
 
-abstract class AbstractCalibrationProcess implements ICalibrationProcess {
+abstract class PhasorAbstractCalibrationProcess implements ICalibrationProcess {
+    
 
     // processing
     protected CalibrationConfig config;
@@ -43,7 +45,7 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
     protected double zzeropos;
 
     // results
-    protected double angle = 0.0;
+    protected double angle = 0;
     protected Homography.TransformationMatrix transformationMatrix = null;
     protected List<PSFSeparator.Position> usedPositions;
     protected DefocusFunction polynomS2Final;
@@ -54,7 +56,7 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
     protected double[] allSigma1s;
     protected double[] allSigma2s;
 
-    public AbstractCalibrationProcess(CalibrationConfig config, IFilterUI selectedFilterUI, IDetectorUI selectedDetectorUI, ICalibrationEstimatorUI calibrationEstimatorUI, DefocusFunction defocusModel, double stageStep, double zRangeLimit, double zzeropos) {
+    public PhasorAbstractCalibrationProcess(CalibrationConfig config, IFilterUI selectedFilterUI, IDetectorUI selectedDetectorUI, ICalibrationEstimatorUI calibrationEstimatorUI, DefocusFunction defocusModel, double stageStep, double zRangeLimit, double zzeropos) {
         this.config = config;
         this.selectedFilterUI = selectedFilterUI;
         this.selectedDetectorUI = selectedDetectorUI;
@@ -135,6 +137,7 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
         List<double[]> sigma1Arrays = new ArrayList<double[]>();
         List<double[]> sigma2Arrays = new ArrayList<double[]>();
 
+                
         AtomicInteger moleculesProcessed = new AtomicInteger(0);
         usedPositions = new ArrayList<PSFSeparator.Position>();
         for(PSFSeparator.Position p : positions) {
@@ -143,20 +146,32 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
             IJ.showStatus("Fitting polynoms: molecule " + moleculesProcessed + " of " + positions.size() + "...");
 
             try {
-                if(p.getSize() < config.minimumFitsCount) {
-                    continue;
-                }
-                double z0guess = guessZ0(imp, p);
+                //if(p.getSize() < config.minimumFitsCount) {
+                //    continue;
+                //}else{
+            //IJ.log("Not enough fits to continue: "+p.getSize());}
+                
+                double z0guess = guessZ0(imp,p);
                 p.discardFitsByFrameRange(z0guess - zRange/stageStep, z0guess + zRange/stageStep);
 
                 // retrieve values again after filtering out fits not in range
                 double[] framesArrayOfZ = p.getFramesAsArrayOfZ(z0guess, stageStep);
-                double[] sigma1Array = p.getAsArray(LABEL_SIGMA1);
-                double[] sigma2Array = p.getAsArray(LABEL_SIGMA2);
-
+                
+                double[] sigma12Array = new double[p.getAsArray(LABEL_SIGMA1).length];
+                double[] sigma21Array = new double[p.getAsArray(LABEL_SIGMA1).length];
+                for (int i=0;i<p.getAsArray(LABEL_SIGMA1).length;i++){
+                    sigma12Array[i] = p.getAsArray(LABEL_SIGMA1)[i]/p.getAsArray(LABEL_SIGMA2)[i];
+                    sigma21Array[i] = p.getAsArray(LABEL_SIGMA2)[i]/p.getAsArray(LABEL_SIGMA1)[i];
+                }
+                double[] sigma1Array = sigma12Array;
+                double[] sigma2Array = sigma21Array;
+                //Old code basing astigmatism on individual phasor magnitudes
+                //double[] sigma1Array = p.getAsArray(LABEL_SIGMA1);
+                //double[] sigma2Array = p.getAsArray(LABEL_SIGMA2);
                 // fit s1,2 = polynomial(frame)
                 DefocusFunction polynomS1;
                 DefocusFunction polynomS2;
+                //int polynomS2;
                 try {
                     polynomS1 = polynomialFitter.fitParams(defocusModel, framesArrayOfZ, sigma1Array, config.polyFitMaxIters);
                     polynomS2 = polynomialFitter.fitParams(defocusModel, framesArrayOfZ, sigma2Array, config.polyFitMaxIters);
@@ -170,11 +185,12 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
                 }
 
                 // defocus out of range?
-                if(config.checkIfDefocusIsInRange && (!isInZRange(polynomS1.getC()) || !isInZRange(polynomS2.getC()))) {
+                if(config.checkIfDefocusIsInRange && (!isInZRange(polynomS1.getC()))) {
                     continue;
                 }
                 // find the center point between the minima of the two polynomials and shift the origin
                 double intersection = (polynomS1.getC() + polynomS2.getC()) / 2;
+                //double intersection = (polynomS1.getC() + 1) / 2;
                 if(!hasEnoughData(framesArrayOfZ, intersection) || (config.checkIfDefocusIsInRange && !isInZRange(intersection))) {
                     continue;
                 }
@@ -198,7 +214,49 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
         allSigma2s = flattenListOfArrays(sigma2Arrays);
         polynomS1Final = polynomialFitter.fitParams(defocusModel, allFrames, allSigma1s, config.finalPolyFitMaxIters);
         polynomS2Final = polynomialFitter.fitParams(defocusModel, allFrames, allSigma2s, config.finalPolyFitMaxIters);
-
+        
+        //First fix formula to cross at (1,0)
+            double a1 = polynomS1Final.a;
+            double a2 = polynomS2Final.a;
+            double b1 = polynomS1Final.b;
+            double b2 = polynomS2Final.b;
+            double c1 = polynomS1Final.c;
+            double c2 = polynomS2Final.c;
+            double calcxposintersect1 = (Math.sqrt(a1*(-b1+c1*c1*a2-2*c1*a2*c2+a2*c2*c2+b2)+a2*(b1-b2))-a1*c1+a2*c2)/(a1-a2);
+            double calcxposintersect2 = -1*(Math.sqrt(a1*(-b1+c1*c1*a2-2*c1*a2*c2+a2*c2*c2+b2)+a2*(b1-b2))+a1*c1-a2*c2)/(a1-a2);
+            double xposintersect = 0;
+            if (Math.abs(calcxposintersect1)<Math.abs(calcxposintersect2)){
+                xposintersect = calcxposintersect1;
+            }else{
+                xposintersect = calcxposintersect2;
+            }
+            double yposintersect = a1*(xposintersect*-1-c1)*(xposintersect*-1-c1)+b1;
+            polynomS1Final.c += xposintersect;
+            polynomS2Final.c += xposintersect;
+            polynomS1Final.b -= (yposintersect-1);
+            polynomS2Final.b -= (yposintersect-1);
+            
+        //Then fix formulae so that they're exact mirrors of each other
+            polynomS1Final.a = polynomS1Final.a/2+polynomS2Final.a/2;
+            polynomS2Final.a = polynomS1Final.a;
+            polynomS1Final.b = polynomS1Final.b/2+polynomS2Final.b/2;
+            polynomS2Final.b = polynomS1Final.b;
+            if (polynomS1Final.c < polynomS2Final.c){ // if c1 is negative
+                polynomS1Final.c = polynomS1Final.c+(Math.abs(polynomS1Final.c)-Math.abs(polynomS2Final.c))/2;
+                polynomS2Final.c = polynomS1Final.c*-1;
+            }else{ //if c1 is positive
+                polynomS1Final.c = polynomS1Final.c-(Math.abs(polynomS1Final.c)-Math.abs(polynomS2Final.c))/2;
+                polynomS2Final.c = polynomS1Final.c*-1;
+            }
+        
+        //Then re-fix formulae to cross at (1,0)
+            double a = polynomS1Final.a;
+            double b = polynomS1Final.b;
+            double c = polynomS1Final.c;
+            yposintersect = a*(-c)*(-c)+b;
+            polynomS1Final.b -= (yposintersect-1);
+            polynomS2Final.b -= (yposintersect-1);
+        
         IJ.showProgress(1);
     }
 
@@ -325,14 +383,15 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
      */
     protected double guessZ0(ImagePlus imp, PSFSeparator.Position p) {
         final ImageStack stack = imp.getStack();
+        //Returning frame where sigmaX/sigmaY == 1 to Z=ZERO
         double[] sigma1AsArray = p.getAsArray(LABEL_SIGMA1);
         double[] sigma2AsArray = p.getAsArray(LABEL_SIGMA2);
-        double[] intensityAsArray = p.getAsArray(LABEL_INTENSITY);
+        //double[] intensityAsArray = p.getAsArray(LABEL_INTENSITY);
 
         double[] ratios = new double[sigma1AsArray.length];
-        for(int i = 0; i < intensityAsArray.length; i++) {
+        for(int i = 0; i < sigma1AsArray.length; i++) {
             ratios[i] = Math.max(sigma1AsArray[i], sigma2AsArray[i]) / Math.min(sigma1AsArray[i], sigma2AsArray[i]);
-            ratios[i] /= intensityAsArray[i];
+            //ratios[i] /= intensityAsArray[i];
         }
 
         ratios = VectorMath.movingAverage(ratios, config.movingAverageLag);
@@ -343,12 +402,14 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
                 minIdx = i;
             }
         }
-
         double stackSize = stack.getSize();
-        if (zzeropos==1){//If zero is at middle of image stack -KM
-            return (stackSize/2);
-        }else{//If zero is a polynomial crossover -KM
+        //IJ.log("Some params: "+sigma1AsArray.length+" | "+p.getSize() +" | "+(double) stack.getSize());
+        //IJ.log("Get zero: giving "+p.fits.get(minIdx).getParam(LABEL_FRAME));
+        if (zzeropos==1){//If zero is at middle of image stack
+            return (stackSize/2);//p.fits.get(minIdx).getParam(LABEL_FRAME)-
+        }else{//If zero is a polynomial crossover
             return p.fits.get(minIdx).getParam(LABEL_FRAME);}
+        
     }
 
     private static double[] flattenListOfArrays(List<double[]> list) {
@@ -379,6 +440,7 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
         }
         int greaterThanCenter = framesArray.length - smallerThanCenter;
 
+        //If all three statements here are false, it returns 1
         return !(smallerThanCenter < config.minFitsInZRange
                 || greaterThanCenter < config.minFitsInZRange
                 || framesArray.length < config.minimumFitsCount);
@@ -497,7 +559,7 @@ abstract class AbstractCalibrationProcess implements ICalibrationProcess {
         // create and setup plot
         Plot plot = new Plot("Sigma", "z [nm]", "sigma [px]", null, (float[]) null);
         plot.setSize(1024, 768);
-        plot.setLimits(-2*zRange, +2*zRange, 0, stageStep);
+        plot.setLimits(-2*zRange, +2*zRange, 0, 5);
         double[] xVals = new double[(int)(2*zRange/stageStep) * 2 + 1];
         for(int val = -2*(int)zRange, i = 0; val <= +2*(int)zRange; val += stageStep, i++) {
             xVals[i] = val;
