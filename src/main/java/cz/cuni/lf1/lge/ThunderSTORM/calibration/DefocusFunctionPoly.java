@@ -2,11 +2,12 @@ package cz.cuni.lf1.lge.ThunderSTORM.calibration;
 
 import java.util.Arrays;
 import java.util.Locale;
-
-import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import org.apache.commons.math3.analysis.ParametricUnivariateFunction;
 
 import javax.swing.*;
+
+import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.sqr;
+import static cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy.pow;
 
 /**
  * A polynomial function y = a*(z-c)^2 + b + d*(z-c)^3
@@ -17,7 +18,7 @@ import javax.swing.*;
  *       I am not sure how to do it in a simple way using the Apache Commons Math library
  */
 public class DefocusFunctionPoly extends DefocusFunction {
-
+    
     public static final String name = "ThunderSTORM";
 
     public DefocusFunctionPoly() {
@@ -63,7 +64,7 @@ public class DefocusFunctionPoly extends DefocusFunction {
     @Override
     public double value(double z, double w0, double a, double b, double c, double d) {
         double xsubx0 = z - c;
-        return MathProxy.sqr(xsubx0)*a + MathProxy.pow(xsubx0, 3)*d + b;
+        return sqr(xsubx0)*a + pow(xsubx0, 3)*d + b;
     }
 
     @Override
@@ -82,10 +83,10 @@ public class DefocusFunctionPoly extends DefocusFunction {
                 double[] gradients = new double[5];
                 // Partial derivatives of: a*(z - c)^2 + b + d*(z - c)^3
                 gradients[0] = 0.0;
-                gradients[1] = -2*trans[2]*xsubx0 - 3*trans[4]*MathProxy.sqr(xsubx0);
-                gradients[2] = MathProxy.sqr(xsubx0);
+                gradients[1] = -2*trans[2]*xsubx0 - 3*trans[4]*sqr(xsubx0);
+                gradients[2] = sqr(xsubx0);
                 gradients[3] = 1;
-                gradients[4] = MathProxy.pow(xsubx0, 3);
+                gradients[4] = pow(xsubx0, 3);
                 return gradients;
             }
         };

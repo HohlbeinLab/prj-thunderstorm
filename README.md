@@ -17,3 +17,7 @@ The modifications were implemented based on [this development version](https://g
 
 ## Getting started
 Install [ImageJ](http://imagej.nih.gov/ij/index.html) and download the latest version of [ThunderSTORM](https://github.com/quantori/prj-thunderstorm/releases/latest). For installation, copy the downloaded file into ImageJ's plugin subdirectory and run ImageJ. See the [Installation guide](https://github.com/zitmen/thunderstorm/wiki/Installation) for more information. To get started using ThunderSTORM, see the [Tutorials](https://github.com/zitmen/thunderstorm/wiki/Tutorials). Example data are provided [here](https://github.com/zitmen/thunderstorm/releases/download/v1.0/example_data.zip).
+
+
+If you use the phasor sub-pixel estimator, please cite this paper (https://doi.org/10.1063/1.5005899):
+* K.J.A. Martens, A.N. Bader, S. Baas, B. Rieger, J. Hohlbein. _Phasor based single-molecule localization microscopy in 3D (pSMLM-3D): an algorithm for MHz localization rates using standard CPUs_ JCP, 2018.

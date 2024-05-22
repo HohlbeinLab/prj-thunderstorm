@@ -13,16 +13,48 @@
     </description>
     <url>https://github.com/zitmen/thunderstorm</url>
 
+    <inceptionYear>2013</inceptionYear>
+    <organization>
+        <name>Wageningen University</name>
+        <url>https://wur.nl/</url>
+    </organization>
+
+    <contributors>
+        <contributor>
+            <name>Koen Martens</name>
+            <email>koenjamartens@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </contributor>
+    </contributors>
+
+    <mailingLists>
+        <mailingList>
+            <name>Image.sc Forum</name>
+            <archive>https://forum.image.sc/tags/imagej</archive>
+        </mailingList>
+    </mailingLists>
+
+    <parent>
+        <groupId>org.scijava</groupId>
+        <artifactId>pom-scijava</artifactId>
+        <version>36.0.0</version>
+    </parent>
+
     <properties>
         <skipTests>true</skipTests>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.7.10</kotlin.version>
-        <imagej.path>C:\Program Files\ImageJ</imagej.path>
-        <imagej1.version>1.53s</imagej1.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <kotlin.version>1.8.0</kotlin.version>
+        <imagej1.version>1.54i</imagej1.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <imagej.path>C:\Users\gobes001\LocalSoftware\fiji-win64\Fiji.app\jars</imagej.path>
         <lyx.path>C:\Program Files (x86)\LyX 2.1\bin\lyx.exe</lyx.path>
         <help.dir>${basedir}/src/main/resources/resources/help</help.dir>
+        <license.licenseName>GNU GPL 3.0</license.licenseName>
+        <license.copyrightOwners>Zitmen</license.copyrightOwners>
+        <scijava.app.directory>C:\Users\gobes001\LocalSoftware\fiji-win64\Fiji.app</scijava.app.directory>
     </properties>
 
     <profiles>
@@ -48,8 +80,12 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/zitmen/thunderstorm/issues</url>
+        <url>https://github.com/HohlbeinLab/prj-thunderstorm/issues</url>
     </issueManagement>
+
+    <ciManagement>
+        <system>None</system>
+    </ciManagement>
 
     <licenses>
         <license>
@@ -158,25 +194,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copytoplugins</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <copy tofile="${imagej.path}/plugins/Thunder_STORM.jar"
-                                      file="target/Thunder_STORM.jar"/>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.3</version>
@@ -218,12 +235,18 @@
             </plugin>
         </plugins>
     </build>
+
     <repositories>
+        <repository>
+            <id>scijava.public</id>
+            <url>https://maven.scijava.org/content/groups/public</url>
+        </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -264,14 +287,20 @@
         <dependency>
             <groupId>net.imagej</groupId>
             <artifactId>ij</artifactId>
-            <version>${imagej1.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.cssbox</groupId>
             <artifactId>swingbox</artifactId>
             <version>1.1</version>
         </dependency>
+                <!--Added by KM-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--End Added by KM-->
         <dependency>
             <groupId>net.java.balloontip</groupId>
             <artifactId>balloontip</artifactId>

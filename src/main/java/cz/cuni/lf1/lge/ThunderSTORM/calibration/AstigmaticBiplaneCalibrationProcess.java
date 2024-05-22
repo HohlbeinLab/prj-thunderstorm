@@ -5,7 +5,6 @@ import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.ui.AstigmaticBiplaneCalibrationEstimatorUI;
 import cz.cuni.lf1.lge.ThunderSTORM.filters.ui.IFilterUI;
 import cz.cuni.lf1.lge.ThunderSTORM.util.IBinaryTransform;
-import cz.cuni.lf1.lge.ThunderSTORM.util.MathProxy;
 import cz.cuni.lf1.lge.ThunderSTORM.util.VectorMath;
 import ij.IJ;
 import ij.ImagePlus;
@@ -46,8 +45,8 @@ public class AstigmaticBiplaneCalibrationProcess extends AbstractCalibrationProc
 
     public AstigmaticBiplaneCalibrationProcess(CalibrationConfig config, IFilterUI selectedFilterUI, IDetectorUI selectedDetectorUI,
                                                AstigmaticBiplaneCalibrationEstimatorUI calibrationEstimatorUI, DefocusFunction defocusModel,
-                                               double stageStep, double zRangeLimit, ImagePlus imp1, ImagePlus imp2, Roi roi1, Roi roi2) {
-        super(config, selectedFilterUI, selectedDetectorUI, calibrationEstimatorUI, defocusModel, stageStep, zRangeLimit);
+                                               double stageStep, double zRangeLimit, ImagePlus imp1, ImagePlus imp2, Roi roi1, Roi roi2, double zzeropos) {
+        super(config, selectedFilterUI, selectedDetectorUI, calibrationEstimatorUI, defocusModel, stageStep, zRangeLimit, zzeropos);
         this.imp1 = imp1;
         this.imp2 = imp2;
         this.roi1 = roi1;
@@ -61,7 +60,7 @@ public class AstigmaticBiplaneCalibrationProcess extends AbstractCalibrationProc
         IJ.log("angle2 = " + angle2);
         IJ.log("Homography transformation matrix: " + transformationMatrix.toString());
 
-        fitQuadraticPolynomials(pos12.keySet());
+        fitQuadraticPolynomials(imp1, pos12.keySet());
         polyS11 = polynomS1Final;
         polyS12 = polynomS2Final;
         allPolyS11 = allPolynomsS1;
@@ -72,7 +71,7 @@ public class AstigmaticBiplaneCalibrationProcess extends AbstractCalibrationProc
         IJ.log("s11 = " + polynomS1Final.toString());
         IJ.log("s12 = " + polynomS2Final.toString());
 
-        fitQuadraticPolynomials(pos12.values());
+        fitQuadraticPolynomials(imp1, pos12.values());
         polyS21 = polynomS1Final;
         polyS22 = polynomS2Final;
         allPolyS21 = allPolynomsS1;
@@ -156,7 +155,7 @@ public class AstigmaticBiplaneCalibrationProcess extends AbstractCalibrationProc
     }
 
     @Override
-    protected double guessZ0(PSFSeparator.Position p) {
+    protected double guessZ0(ImagePlus imp, PSFSeparator.Position p) {
         double[] sigma1AsArray = p.getAsArray(LABEL_SIGMA1);
         double[] sigma2AsArray = p.getAsArray(LABEL_SIGMA2);
         double[] sigma3AsArray = p.getAsArray(LABEL_SIGMA3);
@@ -166,8 +165,8 @@ public class AstigmaticBiplaneCalibrationProcess extends AbstractCalibrationProc
 
         double[] ratios = new double[sigma1AsArray.length];
         for(int i = 0; i < intensity1AsArray.length; i++) {
-            double ratio1 = (MathProxy.max(sigma1AsArray[i], sigma2AsArray[i]) / MathProxy.min(sigma1AsArray[i], sigma2AsArray[i])) / intensity1AsArray[i];
-            double ratio2 = (MathProxy.max(sigma3AsArray[i], sigma4AsArray[i]) / MathProxy.min(sigma3AsArray[i], sigma4AsArray[i])) / intensity2AsArray[i];
+            double ratio1 = (Math.max(sigma1AsArray[i], sigma2AsArray[i]) / Math.min(sigma1AsArray[i], sigma2AsArray[i])) / intensity1AsArray[i];
+            double ratio2 = (Math.max(sigma3AsArray[i], sigma4AsArray[i]) / Math.min(sigma3AsArray[i], sigma4AsArray[i])) / intensity2AsArray[i];
             ratios[i] = (ratio1 + ratio2) / 2.0;
         }
 

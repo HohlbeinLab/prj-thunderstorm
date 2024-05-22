@@ -24,6 +24,7 @@ import cz.cuni.lf1.lge.ThunderSTORM.thresholding.Thresholder;
 import cz.cuni.lf1.lge.ThunderSTORM.util.Point;
 import cz.cuni.lf1.lge.ThunderSTORM.util.VectorMath;
 import ij.IJ;
+import ij.ImageJ;
 import ij.ImagePlus;
 import ij.gui.Roi;
 import ij.plugin.filter.ExtendedPlugInFilter;
@@ -64,7 +65,8 @@ public final class AnalysisPlugIn implements ExtendedPlugInFilter {
     private RenderingQueue renderingQueue;
     private Roi roi;
     private AnalysisOptionsDialog dialog;
-    
+
+
     /**
      * Returns flags specifying capabilities of the plugin.
      *
@@ -144,12 +146,9 @@ public final class AnalysisPlugIn implements ExtendedPlugInFilter {
             } else {
                 // Create and show the dialog
                 try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            dialog = new AnalysisOptionsDialog(imp, command, allFilters, allDetectors, allEstimators, allRenderers);
-                            dialog.setVisible(true);
-                        }
+                    SwingUtilities.invokeAndWait(() -> {
+                        dialog = new AnalysisOptionsDialog(imp, command, allFilters, allDetectors, allEstimators, allRenderers);
+                        dialog.setVisible(true);
                     });
                 } catch(InvocationTargetException e) {
                     throw e.getCause();
@@ -309,5 +308,27 @@ public final class AnalysisPlugIn implements ExtendedPlugInFilter {
             RenderingOverlay.showPointsInImage(rt, processedImage, roi.getBounds(), Color.red, RenderingOverlay.MARKER_CROSS);
             renderingQueue.repaintLater();
         }
+    }
+
+
+    // Only run from the IDE
+    public static void main(String[] args) throws Exception {
+        Class<?> clazz = AnalysisPlugIn.class;
+        java.net.URL url = clazz.getProtectionDomain().getCodeSource().getLocation();
+        java.io.File file = new java.io.File(url.toURI());
+        System.setProperty("plugins.dir", file.getAbsolutePath());
+        //System.setProperty("plugins.dir", "C:\\Users\\gobes001\\source\\repos\\thunderstorm-prj\\target");
+        // start ImageJ
+        ImageJ imagej = new ImageJ();
+
+        // open the Clown sample
+        ImagePlus image = IJ.openImage("C:\\Users\\gobes001\\source\\repos\\thunderstorm-prj\\Substack.tif");
+        image.show();
+
+        // run the plugin
+        IJ.runPlugIn(clazz.getName(), "");
+
+        //IJ.run("Run Analysis");
+        //new AnalysisPlugIn("runAnalysis");
     }
 }

@@ -124,7 +124,7 @@ public class HelpButton extends JButton {
         //set page shown in browser
         if(url != null && !url.equals(htmlBrowser.getPage())) {
             try {
-                htmlBrowser.setPage(url);
+                htmlBrowser.setPage(url.toString());
             } catch(Exception e) {
                 htmlBrowser.setText("Could not load help file");
             }
