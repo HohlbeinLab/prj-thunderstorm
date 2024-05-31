@@ -252,9 +252,9 @@ LatexCommand bibitem
 key "key-6"
 
 \end_inset
- Martens, K.J.A., Bader, A.N., Baas, S., Rieger, B.&amp; Hohlbein, J. (2017).
+ Martens, K.J.A., Bader, A.N., Baas, S., Rieger, B.&amp; Hohlbein, J. (2018).
  Phasor based single-molecule localization microscopy in 3D (pSMLM-3D): an algorithm for MHz localization rates using standard CPUs. 
- https://doi.org/10.1101/191957
+ https://doi.org/10.1063/1.5005899
 Huang, B., Wang, W., Bates, M., & Zhuang, X.
  (2008).
  Three-dimensional super-resolution imaging by stochastic optical reconstruction
