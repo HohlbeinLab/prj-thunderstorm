@@ -78,6 +78,8 @@ ThunderSTORM is an open-source, interactive, and modular plug-in for ImageJ
  ThunderSTORM also offers a set of tools for creation of simulated data
  and for quantitative performance evaluation of localization algorithms
  using Monte-Carlo simulations.
+
+ This is a modified version implementing Phasor based localization and adding support for Java 21.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -86,14 +88,12 @@ Authors and affiliation
 
 \begin_layout Standard
 \noindent
-Martin Ovesný, Pavel Křížek, Josef Borkovec, Zdeněk Švindrych, and Guy M.
- Hagen.
+ Martens, K.J.A., Bader, A.N., Baas, S., Rieger, B.&amp; Hohlbein, J.
 \end_layout
 
 \begin_layout Standard
 \noindent
-Institute of Cellular Biology and Pathology, First Faculty of Medicine,
- Charles University in Prague, Czech Republic.
+Departement of Biophysics, Wageningen University & Research, Wageningen
 \end_layout
 
 \begin_layout Subsubsection*
@@ -101,28 +101,27 @@ How to cite ThunderSTORM
 \end_layout
 
 \begin_layout Standard
-If you use ThunderSTORM to process your data, please, cite our 
+If you use ThunderSTORM (Phasor) to process your data, please, cite our
 \begin_inset CommandInset href
 LatexCommand href
 name "paper"
-target "http://dx.doi.org/10.1093/bioinformatics/btu202"
+target "https://doi.org/10.1063/1.5005899"
 
 \end_inset
 
-: M.
- Ovesný, P.
- Křížek, J.
- Borkovec, Z.
- Švindrych, G.
- M.
- Hagen.
- 
+:
+ Martens, K.J.A.
+ Bader, A.N.
+ Baas, S.
+ Rieger, B.
+ Hohlbein, J.
+
 \emph on
 ThunderSTORM: a comprehensive ImageJ plugin for PALM and STORM data analysis
  and super-resolution imaging.
 
 \emph default
- Bioinformatics 30(16):2389-2390, 2014.
+ J. Chemical Physics 148(12), 2018.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -134,8 +133,8 @@ The latest version of ThunderSTORM, including source code and documentation,
  is available at 
 \begin_inset CommandInset href
 LatexCommand href
-name "https://code.google.com/p/thunder-storm/"
-target "https://code.google.com/p/thunder-storm/"
+name "https://github.com/HohlbeinLab/prj-thunderstorm"
+target "https://github.com/HohlbeinLab/prj-thunderstorm"
 
 \end_inset
 
@@ -178,7 +177,7 @@ In the case of a malfunction, please let us know by using the
 \begin_inset CommandInset href
 LatexCommand href
 name "Google Code issue tracking system"
-target "https://code.google.com/p/thunder-storm/issues/list"
+target "https://github.com/HohlbeinLab/prj-thunderstorm/issues/list"
 
 \end_inset
 

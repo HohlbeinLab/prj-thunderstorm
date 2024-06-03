@@ -27,6 +27,13 @@
                 <role>developer</role>
             </roles>
         </contributor>
+        <contributor>
+            <name>Martijn Gobes</name>
+            <email>martijn.gobes@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </contributor>
     </contributors>
 
     <mailingLists>
@@ -39,7 +46,7 @@
     <parent>
         <groupId>org.scijava</groupId>
         <artifactId>pom-scijava</artifactId>
-        <version>36.0.0</version>
+        <version>37.0.0</version>
     </parent>
 
     <properties>
