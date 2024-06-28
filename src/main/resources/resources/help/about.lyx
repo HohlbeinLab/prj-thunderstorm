@@ -1,7 +1,9 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass article
 \begin_preamble
 \usepackage[unicode=true] {hyperref}
@@ -12,16 +14,18 @@
 \language_package none
 \inputencoding auto
 \fontencoding global
-\font_roman default
-\font_sans default
-\font_typewriter default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
-
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -32,16 +36,26 @@
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 1
+\use_minted 0
 \index Index
 \shortcut idx
 \color #008000
@@ -50,7 +64,10 @@
 \tocdepth 3
 \paragraph_separation skip
 \defskip bigskip
-\quotes_language english
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
@@ -78,8 +95,12 @@ ThunderSTORM is an open-source, interactive, and modular plug-in for ImageJ
  ThunderSTORM also offers a set of tools for creation of simulated data
  and for quantitative performance evaluation of localization algorithms
  using Monte-Carlo simulations.
+ 
+\end_layout
 
- This is a modified version implementing Phasor based localization and adding support for Java 21.
+\begin_layout Standard
+This is a modified version implementing Phasor based localization and adding
+ support for Java 21.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -87,8 +108,28 @@ Authors and affiliation
 \end_layout
 
 \begin_layout Standard
+Original Version:
+\end_layout
+
+\begin_layout Standard
+Martin Ovesný, Pavel Křížek, Josef Borkovec, Zdeněk Švindrych, and Guy M.
+ Hagen.
+\end_layout
+
+\begin_layout Standard
+Institute of Cellular Biology and Pathology, First Faculty of Medicine,
+ Charles University in Prague, Czech Republic.
+\end_layout
+
+\begin_layout Standard
 \noindent
- Martens, K.J.A., Bader, A.N., Baas, S., Rieger, B.&amp; Hohlbein, J.
+Phasor Modified Version:
+\end_layout
+
+\begin_layout Standard
+\noindent
+Martens, K.J.A., Bader, A.N., Baas, S., Rieger, B.
+ & Hohlbein, J.
 \end_layout
 
 \begin_layout Standard
@@ -101,27 +142,58 @@ How to cite ThunderSTORM
 \end_layout
 
 \begin_layout Standard
-If you use ThunderSTORM (Phasor) to process your data, please, cite our
+Please Cite the original ThunderSTORM as well as this modified varient.
+ 
+\end_layout
+
+\begin_layout Standard
+Original ThunderSTORM (
 \begin_inset CommandInset href
 LatexCommand href
-name "paper"
-target "https://doi.org/10.1063/1.5005899"
+name "link"
+target "http://dx.doi.org/10.1093/bioinformatics/btu202"
+literal "false"
 
 \end_inset
 
-:
- Martens, K.J.A.
+),: M.
+ Ovesný, P.
+ Křížek, J.
+ Borkovec, Z.
+ Švindrych, G.
+ M.
+ Hagen.
+ 
+\emph on
+ThunderSTORM: a comprehensive ImageJ plugin for PALM and STORM data analysis
+ and super-resolution imaging.
+ 
+\emph default
+Bioinformatics 30(16):2389-2390, 2014
+\end_layout
+
+\begin_layout Standard
+ThunderSTORM (Phasor) (
+\begin_inset CommandInset href
+LatexCommand href
+name "link"
+target "https://doi.org/10.1063/1.5005899"
+literal "false"
+
+\end_inset
+
+): Martens, K.J.A.
  Bader, A.N.
  Baas, S.
  Rieger, B.
  Hohlbein, J.
-
 \emph on
-ThunderSTORM: a comprehensive ImageJ plugin for PALM and STORM data analysis
- and super-resolution imaging.
+Phasor based single-molecule localization microscopy in 3D (pSMLM-3D): An
+ algorithm for MHz localization rates using standard CPUs.
 
 \emph default
- J. Chemical Physics 148(12), 2018.
+ J.
+ Chemical Physics 148(12), 2018.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -135,6 +207,7 @@ The latest version of ThunderSTORM, including source code and documentation,
 LatexCommand href
 name "https://github.com/HohlbeinLab/prj-thunderstorm"
 target "https://github.com/HohlbeinLab/prj-thunderstorm"
+literal "false"
 
 \end_inset
 
@@ -151,6 +224,7 @@ ThunderSTORM is licensed under the terms of
 LatexCommand href
 name "GNU GPLv3"
 target "http://www.gnu.org/licenses/gpl.html"
+literal "false"
 
 \end_inset
 
@@ -178,6 +252,7 @@ In the case of a malfunction, please let us know by using the
 LatexCommand href
 name "Google Code issue tracking system"
 target "https://github.com/HohlbeinLab/prj-thunderstorm/issues/list"
+literal "false"
 
 \end_inset
 
@@ -201,6 +276,7 @@ The binary release includes these dependencies:
 LatexCommand href
 name "ANTLR runtime "
 target "http://www.antlr3.org/"
+literal "false"
 
 \end_inset
 
@@ -209,6 +285,7 @@ target "http://www.antlr3.org/"
 LatexCommand href
 name "BSD"
 target "http://www.antlr3.org/license.html"
+literal "false"
 
 \end_inset
 
@@ -220,6 +297,7 @@ target "http://www.antlr3.org/license.html"
 LatexCommand href
 name "Balloon tip"
 target "https://balloontip.java.net/"
+literal "false"
 
 \end_inset
 
@@ -228,6 +306,7 @@ target "https://balloontip.java.net/"
 LatexCommand href
 name "BSD New"
 target "http://opensource.org/licenses/BSD-3-Clause"
+literal "false"
 
 \end_inset
 
@@ -239,6 +318,7 @@ target "http://opensource.org/licenses/BSD-3-Clause"
 LatexCommand href
 name "Commons IO"
 target "http://commons.apache.org/proper/commons-io/"
+literal "false"
 
 \end_inset
 
@@ -247,6 +327,7 @@ target "http://commons.apache.org/proper/commons-io/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -258,6 +339,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "Commons lang"
 target "http://commons.apache.org/proper/commons-lang/"
+literal "false"
 
 \end_inset
 
@@ -266,6 +348,7 @@ target "http://commons.apache.org/proper/commons-lang/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -277,6 +360,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "Commons Math"
 target "http://commons.apache.org/proper/commons-math/"
+literal "false"
 
 \end_inset
 
@@ -285,6 +369,7 @@ target "http://commons.apache.org/proper/commons-math/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -296,6 +381,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "Commons Primitives"
 target "http://commons.apache.org/proper/commons-primitives/"
+literal "false"
 
 \end_inset
 
@@ -304,6 +390,7 @@ target "http://commons.apache.org/proper/commons-primitives/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -315,6 +402,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "CSSBox + SwingBox + jStyleParser"
 target "http://cssbox.sourceforge.net/"
+literal "false"
 
 \end_inset
 
@@ -323,6 +411,7 @@ target "http://cssbox.sourceforge.net/"
 LatexCommand href
 name "LGPLv3"
 target "http://www.gnu.org/licenses/lgpl.html"
+literal "false"
 
 \end_inset
 
@@ -334,6 +423,7 @@ target "http://www.gnu.org/licenses/lgpl.html"
 LatexCommand href
 name "Gson"
 target "https://code.google.com/p/google-gson/"
+literal "false"
 
 \end_inset
 
@@ -342,6 +432,7 @@ target "https://code.google.com/p/google-gson/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -353,6 +444,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "ImageJ"
 target "http://rsb.info.nih.gov/ij/"
+literal "false"
 
 \end_inset
 
@@ -364,6 +456,7 @@ target "http://rsb.info.nih.gov/ij/"
 LatexCommand href
 name "MacroAwareUI"
 target "http://bitbucket.org/pepa_borkovec/macroawareui"
+literal "false"
 
 \end_inset
 
@@ -372,6 +465,7 @@ target "http://bitbucket.org/pepa_borkovec/macroawareui"
 LatexCommand href
 name "GPLv3"
 target "http://www.gnu.org/licenses/gpl.html"
+literal "false"
 
 \end_inset
 
@@ -383,6 +477,7 @@ target "http://www.gnu.org/licenses/gpl.html"
 LatexCommand href
 name "NekoHTML "
 target "http://nekohtml.sourceforge.net/"
+literal "false"
 
 \end_inset
 
@@ -391,6 +486,7 @@ target "http://nekohtml.sourceforge.net/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -402,6 +498,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "OpenCSV"
 target "http://opencsv.sourceforge.net/"
+literal "false"
 
 \end_inset
 
@@ -410,6 +507,7 @@ target "http://opencsv.sourceforge.net/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -421,6 +519,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "Protocol Buffers"
 target "https://code.google.com/p/protobuf/"
+literal "false"
 
 \end_inset
 
@@ -429,6 +528,7 @@ target "https://code.google.com/p/protobuf/"
 LatexCommand href
 name "BSD New"
 target "http://opensource.org/licenses/BSD-3-Clause"
+literal "false"
 
 \end_inset
 
@@ -441,6 +541,7 @@ Question mark icon by
 LatexCommand href
 name "Yusuke Kamiyamane"
 target "http://p.yusukekamiyamane.com/"
+literal "false"
 
 \end_inset
 
@@ -449,6 +550,7 @@ target "http://p.yusukekamiyamane.com/"
 LatexCommand href
 name "Creative commons attribution 3.0"
 target "http://creativecommons.org/licenses/by/3.0/"
+literal "false"
 
 \end_inset
 
@@ -460,6 +562,7 @@ target "http://creativecommons.org/licenses/by/3.0/"
 LatexCommand href
 name "SLF4J api"
 target "http://www.slf4j.org/"
+literal "false"
 
 \end_inset
 
@@ -468,6 +571,7 @@ target "http://www.slf4j.org/"
 LatexCommand href
 name "MIT"
 target "http://www.slf4j.org/license.html"
+literal "false"
 
 \end_inset
 
@@ -479,6 +583,7 @@ target "http://www.slf4j.org/license.html"
 LatexCommand href
 name "Snakeyaml"
 target "https://code.google.com/p/snakeyaml/"
+literal "false"
 
 \end_inset
 
@@ -487,6 +592,7 @@ target "https://code.google.com/p/snakeyaml/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -498,6 +604,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "Xerces"
 target "http://xerces.apache.org/"
+literal "false"
 
 \end_inset
 
@@ -506,6 +613,7 @@ target "http://xerces.apache.org/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -517,6 +625,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "XML Commons"
 target "http://xerces.apache.org/xml-commons/"
+literal "false"
 
 \end_inset
 
@@ -525,6 +634,7 @@ target "http://xerces.apache.org/xml-commons/"
 LatexCommand href
 name "Apache License 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0"
+literal "false"
 
 \end_inset
 
@@ -533,6 +643,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0"
 LatexCommand href
 name "W3C"
 target "http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231"
+literal "false"
 
 \end_inset
 

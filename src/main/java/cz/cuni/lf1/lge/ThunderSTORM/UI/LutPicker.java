@@ -114,10 +114,15 @@ public class LutPicker extends JComboBox {
             if (item == null) {
                 return;
             }
-            String[] lutItem = (String[]) item;
-            selectedValue = lutItem[0];
+            if (item instanceof String)
+                selectedValue = (String) item;
+            else {
+                String[] lutItem = (String[]) item;
+                selectedValue = lutItem[0];
+                labelItem.setIcon(new ImageIcon(lutItem[1]));
+            }
             labelItem.setText(selectedValue);
-            labelItem.setIcon(new ImageIcon(lutItem[1]));
+
         }
     }
 }
