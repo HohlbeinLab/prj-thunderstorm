@@ -11,7 +11,9 @@ import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.DoubleValidatorFacto
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.IntegerValidatorFactory;
 import cz.cuni.lf1.lge.ThunderSTORM.util.MacroUI.validators.StringValidatorFactory;
 import ij.Prefs;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.inspector.TagInspector;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -153,7 +155,9 @@ public class EllipticBiplaneGaussianEstimatorUI extends IBiplaneEstimatorUI {
         DefocusCalibration cal2 = null;
         try {
             fr = new FileReader(calibrationFilePath);
-            for (Object obj : new Yaml(new Homography.TransformationMatrix.YamlConstructor()).loadAll(fr)) {
+            LoaderOptions options = new LoaderOptions();
+            options.setTagInspector(tag -> true);
+            for (Object obj : new Yaml(new Homography.TransformationMatrix.YamlConstructor(options)).loadAll(fr)) {
                 if (obj instanceof Homography.TransformationMatrix) {
                     homography = (Homography.TransformationMatrix) obj;
                 } else if (obj instanceof DefocusCalibration) {

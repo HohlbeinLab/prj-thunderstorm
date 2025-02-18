@@ -5,6 +5,8 @@ import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.MoleculeDescriptor;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.PSF.PSFModel;
 import cz.cuni.lf1.lge.ThunderSTORM.util.*;
 import org.apache.commons.math3.linear.*;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.constructor.AbstractConstruct;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Node;
@@ -218,7 +220,8 @@ public class Homography {
         }
 
         public static class YamlConstructor extends Constructor {
-            public YamlConstructor() {
+            public YamlConstructor(LoaderOptions loaderOptions) {
+                super(PolynomialCalibration.class, loaderOptions);
                 this.yamlConstructors.put(new Tag("!homography"), new ConstructHomography());
             }
 
@@ -239,6 +242,7 @@ public class Homography {
 
         public static class YamlRepresenter extends Representer {
             public YamlRepresenter() {
+                super(new DumperOptions());
                 this.representers.put(Homography.TransformationMatrix.class, new RepresentHomography());
             }
 

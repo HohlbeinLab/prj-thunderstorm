@@ -46,16 +46,16 @@
     <parent>
         <groupId>org.scijava</groupId>
         <artifactId>pom-scijava</artifactId>
-        <version>37.0.0</version>
+        <version>40.0.0</version>
     </parent>
 
     <properties>
         <skipTests>true</skipTests>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.8.0</kotlin.version>
-        <imagej1.version>1.54i</imagej1.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+        <imagej1.version>1.54m</imagej1.version>
         <imagej.path>C:\Users\gobes001\LocalSoftware\fiji-win64\Fiji.app\jars</imagej.path>
         <lyx.path>C:\Program Files (x86)\LyX 2.1\bin\lyx.exe</lyx.path>
         <help.dir>${basedir}/src/main/resources/resources/help</help.dir>
@@ -181,7 +181,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <finalName>Thunder_STORM</finalName>
+                    <finalName>Thunder_STORM_pSMLM</finalName>
                 </configuration>
             </plugin>
             <plugin>
@@ -263,7 +263,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
+            <version>33.4.0-jre</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
@@ -336,12 +336,7 @@
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.21.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>1.30</version>
+            <version>4.28.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -357,13 +352,18 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
+            <version>2.17.0</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>net.jafama</groupId>
             <artifactId>jafama</artifactId>
             <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.3</version>
         </dependency>
     </dependencies>
 </project>

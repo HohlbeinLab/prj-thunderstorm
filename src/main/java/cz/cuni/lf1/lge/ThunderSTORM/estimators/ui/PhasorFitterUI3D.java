@@ -2,6 +2,7 @@ package cz.cuni.lf1.lge.ThunderSTORM.estimators.ui;
 
 import cz.cuni.lf1.lge.ThunderSTORM.calibration.DaostormCalibration;
 import cz.cuni.lf1.lge.ThunderSTORM.calibration.DefocusCalibration;
+import cz.cuni.lf1.lge.ThunderSTORM.calibration.PolynomialCalibration;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.IEstimator;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.LSQFitter;
 import cz.cuni.lf1.lge.ThunderSTORM.estimators.MultipleLocationsImageFitting;
@@ -28,7 +29,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 public class PhasorFitterUI3D extends IEstimatorUI {
 
@@ -107,7 +111,9 @@ public class PhasorFitterUI3D extends IEstimatorUI {
     private DefocusCalibration loadCalibration(String calibrationFilePath) {
         this.calibrationFilePath = calibrationFilePath;
         try {
-            Yaml yaml = new Yaml();
+            LoaderOptions options = new LoaderOptions();
+            options.setTagInspector(tag -> tag.getClassName().equals(PolynomialCalibration.class.getName()));
+            Yaml yaml = new Yaml(new Constructor(PolynomialCalibration.class, options));
             Object loaded = yaml.load(new FileReader(calibrationFilePath));
             return (DefocusCalibration) loaded;
         } catch(FileNotFoundException ex) {
